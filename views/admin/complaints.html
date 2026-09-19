@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Complaints — Admin — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/admin-assets/complaints.css">
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <a class="logo" href="/admin/dashboard">
+      <img src="/assets/logo.jpeg" alt="Load Smart">
+      <span class="sub">Admin Portal</span>
+    </a>
+    <a class="back-link" href="/admin/dashboard">← Back to dashboard</a>
+  </header>
+
+  <div class="content">
+    <span class="eyebrow">Admin · User Complaints</span>
+    <h1>User Complaints</h1>
+    <p class="count-line" id="countLine">Loading...</p>
+    <div class="ls-search-box" style="margin-bottom:18px; max-width:420px;">
+      <span class="ls-search-icon">🔍</span>
+      <input type="text" id="complaintSearchInput" class="ls-search-input" placeholder="Search by email, username, or message…">
+    </div>
+    <div id="tableWrap"></div>
+  </div>
+
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/admin-assets/complaints.js"></script>
+</body>
+</html>

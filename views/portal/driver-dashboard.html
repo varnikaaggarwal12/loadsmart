@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver Dashboard — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/portal-assets/driver.css">
+<link rel="stylesheet" href="/assets/notification-bell.css">
+<link rel="stylesheet" href="/assets/trip-timeline.css">
+</head>
+<body class="driver-dash">
+
+<div class="driver-header">
+  <span class="name" id="driverNameLabel">Driver</span>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span id="notifBellMount"></span>
+    <button type="button" class="logout-btn" id="logoutBtn">Log out</button>
+  </div>
+</div>
+
+<div class="driver-content" id="driverContent">
+  <div class="driver-card"><div class="driver-empty">Loading your dashboard…</div></div>
+</div>
+
+<script src="/assets/notification-bell.js"></script>
+<script src="/assets/trip-timeline.js"></script>
+<script src="/portal-assets/driver-dashboard.js"></script>
+</body>
+</html>

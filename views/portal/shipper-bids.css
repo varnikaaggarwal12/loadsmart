@@ -1,0 +1,138 @@
+  :root{
+    --cream:#efece3;
+    --ink:#17251d;
+    --green-deep:#0e3a24;
+    --green-mid:#12492e;
+    --leaf:#9adf8f;
+    --orange:#e8722c;
+    --line: rgba(23,37,29,0.12);
+    --danger:#c0392b;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ font-family:'Inter',sans-serif; color:var(--ink); background:#dcd8cd; }
+  body{ min-height:100vh; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between; padding:24px 36px;
+    border-bottom:1px solid var(--line); background:rgba(255,255,255,0.9);
+  }
+  .logo{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo img{ height:30px; width:auto; display:block; }
+  .logo .sub{ font-weight:600; font-size:12.5px; color:#5c6a61; padding-left:10px; border-left:1.5px solid var(--line); }
+  .back-link{ font-size:13.5px; font-weight:600; color:var(--green-deep); text-decoration:none; opacity:0.8; }
+  .back-link:hover{ opacity:1; }
+  .theme-toggle{
+    display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px;
+    border:1.5px solid var(--line); background:#fff; cursor:pointer; font-size:13px; font-weight:600;
+    color:var(--ink); font-family:'Inter',sans-serif; text-decoration:none;
+  }
+
+  .content{ padding:30px 36px 60px; max-width:960px; margin:0 auto; }
+  .eyebrow{
+    display:inline-block; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;
+    color:var(--green-deep); background:rgba(154,223,143,0.28); padding:6px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  h1{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:28px; margin-bottom:6px; }
+  .sub-line{ color:#4d5b52; font-size:14px; margin-bottom:22px; }
+
+  .banner{ padding:12px 16px; border-radius:10px; font-size:13.5px; font-weight:600; margin-bottom:16px; display:none; }
+  .banner.error{ background:rgba(192,57,43,0.1); color:var(--danger); }
+
+  .empty-state{ text-align:center; padding:50px 20px; color:#7a867e; font-size:14px; background:#fff; border-radius:14px; }
+  .ls-spinner{
+    display:inline-block; width:14px; height:14px; border-radius:50%; margin-right:6px;
+    border:2px solid rgba(23,37,29,0.2); border-top-color:var(--green-deep); vertical-align:-2px;
+    animation:ls-spin 0.7s linear infinite;
+  }
+  @keyframes ls-spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- Load cards ---------- */
+  .load-card{
+    background:#fff; border-radius:16px; padding:22px 24px; margin-bottom:20px;
+    box-shadow:0 10px 30px -18px rgba(0,0,0,0.22);
+  }
+  .load-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+  .load-route{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:19px; }
+  .load-token{ font-family:monospace; font-size:12px; color:#5c6a61; margin-top:4px; }
+  .status-pill{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px;
+    padding:5px 12px; border-radius:999px; white-space:nowrap; background:rgba(52,120,246,0.14); color:#1c4f9c;
+  }
+  .status-pill.open{ background:rgba(232,114,44,0.16); color:#8a4210; }
+  .status-pill.assigned{ background:rgba(154,223,143,0.32); color:var(--green-deep); }
+
+  .info-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:14px; margin-bottom:16px; }
+  .info-cell .k{ font-size:11px; color:#7a867e; text-transform:uppercase; letter-spacing:0.3px; margin-bottom:3px; }
+  .info-cell .v{ font-size:14px; font-weight:600; }
+
+  .deadline-row{ font-size:12.5px; color:#5c6a61; padding-top:14px; border-top:1px solid var(--line); margin-bottom:4px; }
+  .deadline-row b{ color:var(--ink); }
+
+  .carrier-selected-box{
+    margin-top:14px; padding:14px 16px; border-radius:10px; background:rgba(154,223,143,0.14);
+    font-size:14px; font-weight:600; color:var(--green-deep);
+  }
+
+  /* ---------- Offers ---------- */
+  .offers-wrap{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
+  .offers-title{ font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; color:#5c6a61; margin-bottom:12px; }
+  .offer-card{
+    display:flex; align-items:flex-start; gap:16px; padding:16px; border-radius:12px;
+    background:#fbfaf6; border:1.5px solid var(--line); margin-bottom:12px; flex-wrap:wrap;
+  }
+  .offer-card.rank-1{ border-color:var(--leaf); background:rgba(154,223,143,0.1); }
+  .offer-rank-badge{
+    flex:0 0 auto; font-family:'Baloo 2', sans-serif; font-weight:700; font-size:12.5px;
+    padding:6px 12px; border-radius:999px; background:var(--green-deep); color:#fff; white-space:nowrap;
+  }
+  .offer-card:not(.rank-1) .offer-rank-badge{ background:#e5e2d7; color:var(--ink); }
+  .offer-main{ flex:1 1 260px; min-width:220px; }
+  .offer-carrier{ font-weight:700; font-size:15px; margin-bottom:6px; }
+  .offer-price{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:22px; color:var(--green-deep); margin-bottom:8px; }
+  .offer-meta-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:8px; margin-bottom:8px; }
+  .offer-meta-grid .k{ font-size:10.5px; text-transform:uppercase; color:#7a867e; letter-spacing:0.3px; }
+  .offer-meta-grid .v{ font-size:13px; font-weight:600; }
+  .offer-notes{ font-size:12.5px; color:#5c6a61; margin-top:6px; }
+  .offer-scores{ display:flex; gap:10px; flex:0 0 auto; }
+  .score-badge{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    width:74px; height:74px; border-radius:50%; background:#fff; border:2px solid var(--line);
+    font-family:'Baloo 2', sans-serif;
+  }
+  .score-badge .num{ font-weight:700; font-size:17px; }
+  .score-badge .lbl{ font-size:9px; text-transform:uppercase; letter-spacing:0.2px; color:#7a867e; font-family:'Inter',sans-serif; }
+  .score-badge.match{ border-color:var(--orange); }
+  .score-badge.trust{ border-color:var(--green-mid); }
+  .accept-offer-btn{
+    flex:1 1 100%; margin-top:12px; padding:11px 18px; border-radius:10px; border:none; cursor:pointer;
+    background:var(--green-deep); color:#fff; font-weight:700; font-size:13.5px; font-family:'Inter',sans-serif;
+  }
+  .accept-offer-btn:hover:not(:disabled){ background:var(--green-mid); }
+  .accept-offer-btn:disabled{ opacity:0.5; cursor:not-allowed; }
+
+  @media (max-width:600px){
+    .content{ padding:24px 18px 50px; }
+    .load-card{ padding:18px; }
+    .offer-card{ flex-direction:column; }
+    .offer-scores{ align-self:flex-start; }
+  }
+
+  /* ---------- Dark / Light mode ---------- */
+  body.dark-mode{ background:#111214; color:#f2f3f1; }
+  body.dark-mode header{ background:rgba(23,24,26,0.9); border-color:rgba(242,243,241,0.14); }
+  body.dark-mode .logo .sub{ color:#b7bcb9; }
+  body.dark-mode .theme-toggle{ background:#2c2d30; color:#f2f3f1; border-color:rgba(242,243,241,0.14); }
+  body.dark-mode .sub-line{ color:#b7bcb9; }
+  body.dark-mode .load-card, body.dark-mode .empty-state{ background:#1f2022; color:#f2f3f1; }
+  body.dark-mode .load-token{ color:#b7bcb9; }
+  body.dark-mode .info-cell .k{ color:#b7bcb9; }
+  body.dark-mode .deadline-row{ color:#b7bcb9; border-color:rgba(242,243,241,0.12); }
+  body.dark-mode .offers-wrap{ border-color:rgba(242,243,241,0.12); }
+  body.dark-mode .offers-title{ color:#b7bcb9; }
+  body.dark-mode .offer-card{ background:#232427; border-color:rgba(242,243,241,0.14); }
+  body.dark-mode .offer-card.rank-1{ background:rgba(154,223,143,0.08); }
+  body.dark-mode .offer-card:not(.rank-1) .offer-rank-badge{ background:#2c2d30; color:#f2f3f1; }
+  body.dark-mode .offer-meta-grid .k{ color:#9aa39b; }
+  body.dark-mode .offer-notes{ color:#b7bcb9; }
+  body.dark-mode .score-badge{ background:#1f2022; }
+  body.dark-mode .carrier-selected-box{ background:rgba(154,223,143,0.1); }

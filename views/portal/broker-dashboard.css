@@ -1,0 +1,295 @@
+/* broker-dashboard.css — Broker Portal dashboard.
+   Palette matches the rest of the site (see public/assets/register.css). */
+:root{
+  --cream:#efece3;
+  --ink:#17251d;
+  --green-deep:#0e3a24;
+  --green-mid:#12492e;
+  --leaf:#9adf8f;
+  --orange:#e8722c;
+  --orange-dark:#d4611e;
+  --line: rgba(23,37,29,0.14);
+  --danger:#c0392b;
+  --warn:#b8860b;
+  --card-bg:#ffffff;
+}
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+body{
+  font-family:'Inter', sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+  position:relative;
+}
+
+/* ---------- Decorative "Logistics Market Network" animated background ----------
+   Purely decorative: pointer-events:none, sits behind all content, respects
+   prefers-reduced-motion (canvas simply isn't animated in that case). */
+#lsNetworkCanvas{
+  position:fixed; inset:0; width:100%; height:100%;
+  z-index:0; pointer-events:none; opacity:0.5;
+}
+body.dark-mode #lsNetworkCanvas{ opacity:0.35; }
+
+header, .content, .ls-toast, .ls-modal-overlay{ position:relative; z-index:1; }
+
+header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 28px; background:rgba(255,255,255,0.88); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+header .logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
+header .logo img{ height:34px; border-radius:8px; }
+header .logo .sub{ font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--green-deep); }
+.header-actions{ display:flex; align-items:center; gap:14px; }
+.theme-toggle{
+  display:inline-flex; align-items:center; gap:6px; background:var(--card-bg);
+  border:1.5px solid var(--line); border-radius:10px; padding:8px 14px;
+  font-weight:600; cursor:pointer; color:var(--ink); font-size:14px;
+}
+.logout-link{
+  background:transparent; border:1.5px solid var(--danger); color:var(--danger);
+  border-radius:10px; padding:8px 14px; font-weight:700; cursor:pointer;
+}
+
+.content{ max-width:1240px; margin:0 auto; padding:28px 24px 80px; }
+.eyebrow{ text-transform:uppercase; letter-spacing:0.08em; font-size:12.5px; font-weight:700; color:var(--green-mid); }
+h1{ font-family:'Baloo 2', sans-serif; margin:6px 0 4px; color:var(--green-deep); }
+.sub-line{ color:rgba(23,37,29,0.72); margin:0 0 20px; }
+
+/* ---------- Tabs ---------- */
+.tabbar{
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;
+  border-bottom:1.5px solid var(--line); padding-bottom:10px;
+}
+.tab-btn{
+  background:transparent; border:1.5px solid transparent; border-radius:10px;
+  padding:9px 16px; font-weight:700; color:var(--ink); cursor:pointer; font-size:14.5px;
+}
+.tab-btn:hover{ background:rgba(23,37,29,0.06); }
+.tab-btn.active{ background:var(--green-deep); color:#fff; }
+.tab-panel{ display:none; }
+.tab-panel.active{ display:block; animation:fadeIn 0.25s ease; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+/* ---------- Cards ---------- */
+.cards-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:14px; margin-bottom:22px;
+}
+.stat-card{
+  background:var(--card-bg); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  box-shadow:0 2px 10px rgba(14,58,36,0.06);
+}
+.stat-card .label{ font-size:12.5px; color:rgba(23,37,29,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.03em; }
+.stat-card .value{ font-family:'Baloo 2', sans-serif; font-size:28px; color:var(--green-deep); margin-top:4px; }
+.stat-card .note{ font-size:12px; color:rgba(23,37,29,0.55); margin-top:4px; }
+.stat-card.warn .value{ color:var(--orange); }
+
+.two-col{ display:grid; grid-template-columns:1.3fr 1fr; gap:16px; margin-bottom:16px; }
+@media (max-width:900px){ .two-col{ grid-template-columns:1fr; } }
+
+.panel-card{
+  background:var(--card-bg); border:1px solid var(--line); border-radius:16px;
+  padding:20px 22px; margin-bottom:16px; box-shadow:0 2px 10px rgba(14,58,36,0.05);
+}
+.panel-card h2{ font-family:'Baloo 2', sans-serif; color:var(--green-deep); margin:0 0 6px; font-size:19px; }
+.panel-card .hint{ color:rgba(23,37,29,0.6); font-size:13.5px; margin:0 0 14px; }
+.optional-tag{
+  font-size:11px; font-weight:700; background:rgba(154,223,143,0.35); color:var(--green-deep);
+  padding:3px 9px; border-radius:20px; margin-left:8px; vertical-align:middle;
+}
+
+/* ---------- Opportunity Radar ---------- */
+.opportunity-list{ display:flex; flex-direction:column; gap:10px; }
+.opportunity-item{
+  border:1px solid var(--line); border-radius:12px; padding:12px 14px; position:relative;
+  background:linear-gradient(90deg, rgba(154,223,143,0.12), transparent);
+}
+.opportunity-item .route{ font-weight:700; color:var(--green-deep); }
+.opportunity-item .meta{ font-size:12.5px; color:rgba(23,37,29,0.65); margin-top:2px; }
+.opportunity-item .reasons{ margin-top:6px; font-size:12.5px; }
+.opportunity-item .reasons li{ margin-left:16px; }
+.opportunity-item .score-badge{
+  position:absolute; top:12px; right:14px; background:var(--green-deep); color:#fff;
+  font-weight:700; font-size:12px; padding:3px 9px; border-radius:20px;
+}
+
+/* ---------- Risk indicators ---------- */
+.risk-list{ display:flex; flex-direction:column; gap:8px; }
+.risk-item{
+  display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border-radius:10px;
+  background:rgba(232,114,44,0.08); border:1px solid rgba(232,114,44,0.25); font-size:13.5px;
+}
+.risk-item.ok{ background:rgba(154,223,143,0.15); border-color:rgba(154,223,143,0.4); }
+
+/* ---------- Timeline ---------- */
+.timeline-list{ display:flex; flex-direction:column; gap:0; max-height:340px; overflow-y:auto; }
+.timeline-item{ display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.timeline-item:last-child{ border-bottom:none; }
+.timeline-item .dot{ width:9px; height:9px; border-radius:50%; background:var(--green-mid); margin-top:5px; flex:none; }
+.timeline-item .t{ font-size:12px; color:rgba(23,37,29,0.55); }
+.timeline-item .l{ font-weight:600; }
+.timeline-item .d{ font-size:12.5px; color:rgba(23,37,29,0.65); }
+
+/* ---------- Filters ---------- */
+.filter-bar{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.filter-bar input, .filter-bar select{
+  border:1.5px solid var(--line); border-radius:10px; padding:9px 12px; font-size:13.5px;
+  background:var(--card-bg); color:var(--ink); flex:1 1 140px; min-width:120px;
+}
+.btn-primary{
+  background:var(--orange); color:#fff; border:none; border-radius:10px; padding:10px 18px;
+  font-weight:700; cursor:pointer; font-size:14px;
+}
+.btn-primary:hover{ background:var(--orange-dark); }
+.btn-primary:disabled{ opacity:0.55; cursor:not-allowed; }
+.btn-secondary{
+  background:transparent; border:1.5px solid var(--line); color:var(--green-deep);
+  border-radius:10px; padding:10px 18px; font-weight:700; cursor:pointer; font-size:14px;
+}
+
+/* ---------- Loads / bids / shipments lists ---------- */
+.loads-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:14px; }
+.load-card, .bid-card, .shipment-card{
+  background:var(--card-bg); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  box-shadow:0 2px 8px rgba(14,58,36,0.05);
+}
+.load-card .route, .bid-card .route, .shipment-card .route{ font-weight:700; color:var(--green-deep); font-size:15.5px; }
+.load-card .meta, .bid-card .meta, .shipment-card .meta{ font-size:12.5px; color:rgba(23,37,29,0.65); margin-top:4px; line-height:1.6; }
+.load-card .actions, .bid-card .actions{ margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+.bids-list, .shipments-list{ display:flex; flex-direction:column; gap:12px; }
+
+.badge{
+  display:inline-block; padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:700;
+  background:rgba(23,37,29,0.08); color:var(--ink);
+}
+.badge.SUBMITTED, .badge.PENDING_REVIEW, .badge.SHORTLISTED{ background:rgba(216,167,45,0.2); color:#8a6d1f; }
+.badge.ACCEPTED, .badge.APPROVED{ background:rgba(154,223,143,0.35); color:var(--green-deep); }
+.badge.REJECTED, .badge.EXPIRED{ background:rgba(192,57,43,0.15); color:var(--danger); }
+.badge.WITHDRAWN, .badge.DRAFT{ background:rgba(23,37,29,0.08); color:rgba(23,37,29,0.6); }
+
+/* ---------- Broker Automation status badges (lowercase, BrokerConnection / BrokerSavedLoad enums) ---------- */
+.badge.pending, .badge.shipper_notified, .badge.carrier_notified, .badge.negotiating,
+.badge.saved, .badge.matched, .badge.contacted{ background:rgba(216,167,45,0.2); color:#8a6d1f; }
+.badge.approved, .badge.accepted{ background:rgba(154,223,143,0.35); color:var(--green-deep); }
+.badge.rejected, .badge.expired{ background:rgba(192,57,43,0.15); color:var(--danger); }
+.badge.cancelled{ background:rgba(23,37,29,0.08); color:rgba(23,37,29,0.6); }
+
+/* ---------- Carrier Connect (Broker Automation) ---------- */
+.workflow-card .workflow-steps{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:8px;
+}
+.workflow-steps span{
+  background:rgba(154,223,143,0.18); border:1px solid rgba(154,223,143,0.5); color:var(--green-deep);
+  font-size:12.5px; font-weight:700; padding:6px 12px; border-radius:20px; white-space:nowrap;
+}
+.carrier-results{ display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+.carrier-result-item{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  border:1px solid var(--line); border-radius:12px; padding:10px 14px;
+}
+.carrier-result-item.selected{ border-color:var(--leaf); background:rgba(154,223,143,0.1); }
+.carrier-result-item .name{ font-weight:700; color:var(--green-deep); }
+.carrier-result-item .meta{ font-size:12.5px; color:rgba(23,37,29,0.65); }
+.score-badge-inline{
+  display:inline-block; background:var(--green-deep); color:#fff; font-weight:700; font-size:11.5px;
+  padding:2px 8px; border-radius:20px; margin-left:6px; vertical-align:middle;
+}
+.reasons{ margin:6px 0 0; padding-left:18px; font-size:12.5px; }
+.reasons li{ margin-bottom:2px; }
+
+/* ---------- KYC ---------- */
+.kyc-docs-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:12px; }
+.kyc-doc-card{ border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+.kyc-doc-card .name{ font-weight:700; font-size:13.5px; }
+.kyc-doc-card .state{ font-size:12px; margin-top:4px; }
+.kyc-doc-card input[type=file]{ margin-top:8px; font-size:12px; width:100%; }
+.kyc-doc-card .ai-note{ font-size:12px; margin-top:6px; padding:6px 8px; border-radius:8px; background:rgba(154,223,143,0.15); }
+
+/* ---------- AI Assistant ---------- */
+.ai-panel .ai-chat-log{
+  border:1px solid var(--line); border-radius:12px; padding:14px; height:340px; overflow-y:auto;
+  background:rgba(23,37,29,0.02); margin-bottom:12px;
+}
+.ai-msg{ margin-bottom:12px; max-width:85%; padding:10px 14px; border-radius:12px; font-size:13.5px; line-height:1.5; white-space:pre-wrap; }
+.ai-msg.user{ background:var(--green-deep); color:#fff; margin-left:auto; border-bottom-right-radius:2px; }
+.ai-msg.assistant{ background:#fff; border:1px solid var(--line); border-bottom-left-radius:2px; }
+.ai-msg.error{ background:rgba(192,57,43,0.1); border:1px solid rgba(192,57,43,0.3); color:var(--danger); }
+.ai-chat-input-row{ display:flex; gap:8px; }
+.ai-chat-input-row input{ flex:1; border:1.5px solid var(--line); border-radius:10px; padding:11px 14px; font-size:14px; }
+.ai-suggestions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.suggestion-chip{
+  background:rgba(154,223,143,0.18); border:1px solid rgba(154,223,143,0.5); border-radius:20px;
+  padding:6px 12px; font-size:12.5px; cursor:pointer; color:var(--green-deep);
+}
+
+/* ---------- Profile ---------- */
+.field-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; margin-bottom:14px; }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field label{ font-size:13px; font-weight:700; color:var(--green-deep); }
+.field input, .field textarea{
+  border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; font-size:14px;
+  background:var(--card-bg); color:var(--ink); font-family:inherit;
+}
+
+/* ---------- Banners / toast ---------- */
+.banner{ padding:10px 14px; border-radius:10px; font-size:13.5px; margin-bottom:12px; display:none; }
+.banner:not(:empty){ display:block; }
+.banner.error{ background:rgba(192,57,43,0.1); color:var(--danger); border:1px solid rgba(192,57,43,0.3); }
+.banner.success{ background:rgba(154,223,143,0.2); color:var(--green-deep); border:1px solid rgba(154,223,143,0.5); }
+.empty-state{ text-align:center; padding:40px 20px; color:rgba(23,37,29,0.55); }
+.ls-spinner{
+  display:inline-block; width:16px; height:16px; border:2.5px solid var(--line);
+  border-top-color:var(--green-deep); border-radius:50%; animation:spin 0.8s linear infinite; margin-right:8px; vertical-align:middle;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.ls-toast{
+  position:fixed; bottom:24px; left:50%; transform:translate(-50%, 20px); z-index:50;
+  background:var(--green-deep); color:#fff; padding:12px 20px; border-radius:12px;
+  font-weight:600; font-size:13.5px; opacity:0; pointer-events:none; transition:all 0.25s ease;
+}
+.ls-toast.show{ opacity:1; transform:translate(-50%, 0); }
+
+/* ---------- Modals ---------- */
+.ls-modal-overlay{
+  position:fixed; inset:0; background:rgba(14,58,36,0.45); z-index:40;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.ls-modal-overlay[hidden]{ display:none; }
+.ls-modal{
+  background:var(--card-bg); border-radius:16px; padding:26px; max-width:560px; width:100%;
+  max-height:86vh; overflow-y:auto; position:relative; box-shadow:0 12px 40px rgba(0,0,0,0.25);
+}
+.ls-modal-close{
+  position:absolute; top:14px; right:14px; background:transparent; border:none; font-size:18px;
+  cursor:pointer; color:rgba(23,37,29,0.6);
+}
+.ls-modal h2{ font-family:'Baloo 2', sans-serif; color:var(--green-deep); margin-top:0; }
+.ls-modal select{ width:100%; border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; }
+
+/* ---------- Load Matching / Post Load / Carrier Connect roster additions ---------- */
+.badge.POSTED{ background:rgba(154,223,143,0.35); color:var(--green-deep); }
+.badge.CANCELLED{ background:rgba(192,57,43,0.15); color:var(--danger); }
+details > summary::-webkit-details-marker{ color:var(--green-deep); }
+#postLoadModal .ls-modal, #findCarrierModal .ls-modal, #carrierProfileModal .ls-modal{ max-width:720px; }
+
+/* ---------- Dark mode ---------- */
+body.dark-mode{ --cream:#12181a; --ink:#eef1ec; --card-bg:#1c2325; --line: rgba(238,241,236,0.14); }
+body.dark-mode header{ background:rgba(18,24,26,0.9); }
+body.dark-mode .tab-btn:hover{ background:rgba(238,241,236,0.08); }
+body.dark-mode .ai-chat-log{ background:rgba(238,241,236,0.03); }
+body.dark-mode .badge{ background:rgba(238,241,236,0.1); }
+
+@media (max-width:640px){
+  header{ padding:12px 14px; flex-wrap:wrap; gap:10px; }
+  .content{ padding:18px 14px 60px; }
+  .header-actions{ gap:8px; }
+  .tabbar{ overflow-x:auto; flex-wrap:nowrap; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  #lsNetworkCanvas{ display:none; }
+  .tab-panel.active{ animation:none; }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracking — Admin — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/assets/leaflet/leaflet.css">
+<link rel="stylesheet" href="/assets/trip-timeline.css">
+<link rel="stylesheet" href="/admin-assets/tracking.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/admin/dashboard">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Admin Portal</span>
+      </a>
+      <a class="back-link" href="/admin/dashboard">← Back to dashboard</a>
+    </header>
+
+    <div class="content">
+      <span class="eyebrow">Admin · Tracking</span>
+      <h1>Live shipment &amp; fleet tracking</h1>
+      <p class="intro">Browse by Shipper, Carrier or Broker, drill into an account to see its orders, then open any order to view or manually update its live tracking status.</p>
+
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card"><div class="num" id="statShippers">—</div><div class="label">Registered shippers</div></div>
+        <div class="stat-card"><div class="num" id="statBrokers">—</div><div class="label">Registered brokers</div></div>
+        <div class="stat-card"><div class="num" id="statCarriers">—</div><div class="label">Registered carriers</div></div>
+        <div class="stat-card"><div class="num" id="statActive">—</div><div class="label">Active tracked orders</div></div>
+      </div>
+
+      <div class="tabs" id="roleTabs">
+        <button class="tab-btn active" data-role="shipper">Shipper</button>
+        <button class="tab-btn" data-role="carrier">Carrier</button>
+        <button class="tab-btn" data-role="broker">Broker</button>
+      </div>
+
+      <div class="crumbs" id="crumbs"></div>
+      <div id="viewRoot"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ---------- Tracking update confirmation popup ---------- -->
+<div class="tu-modal-overlay" id="tuModalOverlay">
+  <div class="tu-modal-box" id="tuModalBox">
+    <div class="tu-modal-icon" id="tuModalIcon"></div>
+    <h3 id="tuModalTitle"></h3>
+    <div class="tu-detail-rows" id="tuModalRows" style="display:none;"></div>
+    <p id="tuModalMessage" style="display:none;"></p>
+    <button type="button" class="tu-modal-close-btn" id="tuModalCloseBtn">OK</button>
+  </div>
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/assets/leaflet/leaflet.js"></script>
+<script src="/assets/live-map.js"></script>
+<script src="/assets/trip-timeline.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/admin-assets/tracking.js"></script>
+</body>
+</html>

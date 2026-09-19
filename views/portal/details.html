@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — {{ROLE_TITLE}} — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/portal-assets/details.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">{{ROLE_TITLE}} Portal</span>
+      </a>
+      <div class="header-actions">
+        <a class="theme-toggle" id="estimateBtn" href="/portal/shipper/estimate" style="text-decoration:none; display:none;">📦 Estimate &amp; Booking</a>
+        <a class="theme-toggle" id="liveTrackingBtn" href="/portal/shipper/live-tracking" style="text-decoration:none; display:none;">📍 Live Tracking</a>
+        <a class="theme-toggle" id="requestsBtn" href="/portal/shipper/requests" style="text-decoration:none; display:none;">📝 Request</a>
+        <a class="theme-toggle" id="shipperBidsBtn" href="/portal/shipper/bids" style="text-decoration:none; display:none;">🎯 Bids</a>
+        <a class="theme-toggle" id="carrierLoadsBtn" href="/portal/carrier/loads" style="text-decoration:none; display:none;">🚚 My Loads</a>
+        <a class="theme-toggle" id="carrierFleetBtn" href="/portal/carrier/fleet" style="text-decoration:none; display:none;">🧑‍✈️ Fleet</a>
+        <a class="theme-toggle" id="carrierBiddingBtn" href="/portal/carrier/bidding" style="text-decoration:none; display:none;">💰 Bid on Loads</a>
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+        </button>
+        <button type="button" id="collapseToggle" class="theme-toggle" aria-label="Toggle side-by-side layout">⊞ Side by side</button>
+        <button type="button" id="updateProfileBtn" class="theme-toggle" style="display:none;">✎ Update</button>
+        <button type="button" id="logoutBtn" class="logout-link">Log out</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <span class="eyebrow">My Account · {{ROLE_TITLE}}</span>
+      <h1 id="welcomeHeading">Your details</h1>
+      <p class="sub-line" id="subLine">Loading your account...</p>
+
+      <div class="kyc-card" id="statusCard" style="display:none;">
+        <div>
+          <h2>Account review status</h2>
+          <p id="statusNote">Set by the Load Smart admin team after reviewing your KYC details.</p>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge" id="statusBadge"></span>
+          <button type="button" id="editRejectedBtn" class="theme-toggle" style="display:none; margin-left:10px;">✎ Edit</button>
+          <div class="rejection-note" id="rejectionNote" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="kyc-card" id="editFormCard" style="display:none; flex-direction:column; align-items:stretch;">
+        <h2 id="editFormTitle" style="margin-bottom:4px;">Edit your details</h2>
+        <p id="editFormSubtitle" style="margin-bottom:16px;">Correct the information below and resubmit — Admin will review it again.</p>
+        <div id="editFormError" class="rejection-note" style="display:none; margin-bottom:14px;"></div>
+        <div id="editFormSuccess" style="display:none; margin-bottom:14px; color:var(--green-deep); font-weight:600; font-size:13.5px;"></div>
+        <div class="edit-grid" id="editFormGrid"></div>
+        <div style="display:flex; gap:10px; margin-top:18px;">
+          <button type="button" id="editFormSaveBtn" class="submit-btn" style="width:auto; padding:12px 26px;">Save &amp; Resubmit for Review</button>
+          <button type="button" id="editFormCancelBtn" class="theme-toggle">Cancel</button>
+        </div>
+      </div>
+
+      <div class="kyc-card" id="kycCard" style="display:none;">
+        <div>
+          <h2>Aadhaar number</h2>
+        </div>
+        <span class="badge" id="kycBadge"></span>
+      </div>
+
+      <div class="kyc-card" id="driverDocsCard" style="display:none; flex-direction:column; align-items:stretch;">
+        <h2 style="margin-bottom:4px;">Driver documents</h2>
+        <p style="margin-bottom:16px; font-size:13.5px; color:#7a867e;">Upload or replace the driver's Aadhaar card (front &amp; back), RC (vehicle registration certificate), and DL (driving licence) photos here at any time.</p>
+        <div class="edit-grid" id="driverDocsGrid"></div>
+      </div>
+
+      <div class="kyc-card" id="notifPrefsCard" style="display:none; flex-direction:column; align-items:stretch;">
+        <h2 style="margin-bottom:4px;">Email notification preferences</h2>
+        <p style="margin-bottom:14px; font-size:13.5px; color:#7a867e;">Choose which emails Load Smart sends you. Assignment and status-change emails are important for active shipments, so we keep them on by default.</p>
+        <div id="notifPrefsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px;"></div>
+        <div style="margin-top:16px;">
+          <button type="button" id="saveNotifPrefsBtn" class="submit-btn" style="width:auto; padding:10px 22px;">Save Preferences</button>
+        </div>
+      </div>
+
+      <div id="tablesWrap"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="/portal-assets/details.js"></script>
+</body>
+</html>

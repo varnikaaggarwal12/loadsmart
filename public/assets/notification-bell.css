@@ -1,0 +1,34 @@
+/**
+ * notification-bell.css
+ * Shared styling for the in-app Notification Center bell
+ * (public/assets/notification-bell.js). Self-contained — uses its own
+ * fallback colors rather than relying on --green-deep/--danger/--line
+ * custom properties, since this stylesheet is included on pages (admin
+ * dashboard, shipper live-tracking, driver dashboard) that don't all
+ * define the same variable names.
+ */
+.ls-notif-bell{ position:relative; display:inline-flex; align-items:center; }
+.ls-notif-bell-btn{
+  background:rgba(0,0,0,0.08); border:none; color:inherit; width:34px; height:34px; border-radius:50%;
+  cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; position:relative;
+}
+.ls-notif-badge{
+  position:absolute; top:-3px; right:-3px; background:#c0392b; color:#fff; font-size:10px; font-weight:700;
+  min-width:16px; height:16px; border-radius:8px; display:flex; align-items:center; justify-content:center; padding:0 3px;
+}
+.ls-notif-panel{
+  position:absolute; top:42px; right:0; width:320px; max-height:400px; overflow-y:auto; background:#fff;
+  border-radius:14px; box-shadow:0 20px 40px -18px rgba(0,0,0,0.4); z-index:200; display:none; color:#17251d;
+  font-family:'Inter', sans-serif;
+}
+.ls-notif-panel.open{ display:block; }
+.ls-notif-panel-head{ display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid rgba(23,37,29,0.12); }
+.ls-notif-panel-head b{ font-size:13.5px; }
+.ls-notif-mark-all{ background:none; border:none; color:#0e3a24; font-size:12px; font-weight:700; cursor:pointer; }
+.ls-notif-item{ padding:10px 14px; border-bottom:1px solid rgba(23,37,29,0.12); cursor:pointer; }
+.ls-notif-item:last-child{ border-bottom:none; }
+.ls-notif-item.unread{ background:rgba(154,223,143,0.16); }
+.ls-notif-item .ti{ font-weight:700; font-size:12.5px; }
+.ls-notif-item .tm{ font-size:12px; color:#5c6a61; margin-top:2px; }
+.ls-notif-item .tt{ font-size:10.5px; color:#9aa39d; margin-top:4px; }
+.ls-notif-empty{ padding:24px 14px; text-align:center; color:#9aa39d; font-size:12.5px; }

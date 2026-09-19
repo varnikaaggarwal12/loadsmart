@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bid on Loads — Carrier — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/portal-assets/carrier-bidding.css">
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/portal/carrier">
+    <img src="/assets/logo.jpeg" alt="Load Smart">
+    <span class="sub">Carrier Portal</span>
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+    </button>
+    <a class="back-link" href="/portal/carrier">← Back to My Account</a>
+  </div>
+</header>
+
+<div class="content">
+  <span class="eyebrow">Carrier Portal · Bidding</span>
+  <h1>Bid on Loads</h1>
+  <p class="sub-line">Browse loads open for bidding, submit your rate, and track every bid you've placed in one place.</p>
+
+  <div class="bid-tabs" id="bidTabs">
+    <button type="button" class="bid-tab-btn active" data-tab="available">📦 Available Loads</button>
+    <button type="button" class="bid-tab-btn" data-tab="mine">🧾 My Bids</button>
+  </div>
+
+  <div id="errorBanner" class="banner error"></div>
+
+  <div id="availablePanel">
+    <div id="availableListWrap">
+      <div class="empty-state"><span class="ls-spinner"></span> Loading loads open for bidding…</div>
+    </div>
+  </div>
+
+  <div id="minePanel" style="display:none;">
+    <div id="myBidsListWrap">
+      <div class="empty-state"><span class="ls-spinner"></span> Loading your bids…</div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/portal-assets/carrier-bidding.js"></script>
+</body>
+</html>

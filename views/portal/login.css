@@ -1,0 +1,63 @@
+  .admin-shell{
+    max-width:420px;
+    margin:0 auto;
+    padding:80px 36px 60px;
+  }
+  .admin-shell h1{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:28px;
+    margin-bottom:8px;
+  }
+  .admin-shell p.intro{
+    color:#4d5b52;
+    font-size:14.5px;
+    margin-bottom:30px;
+  }
+  .error-banner{
+    background:rgba(192,57,43,0.1);
+    border:1px solid rgba(192,57,43,0.3);
+    color:#c0392b;
+    font-size:13.5px;
+    font-weight:600;
+    padding:12px 14px;
+    border-radius:10px;
+    margin-bottom:22px;
+  }
+
+  /* ---------- Forgot Password modal ---------- */
+  .fp-modal-overlay{
+    display:none; position:fixed; inset:0; z-index:200; background:rgba(15,20,17,0.55);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .fp-modal-overlay.show{ display:flex; }
+  .fp-modal-box{
+    position:relative; background:#fff; border-radius:18px; padding:32px 30px;
+    max-width:400px; width:100%; box-shadow:0 30px 70px -20px rgba(0,0,0,0.45); text-align:center;
+  }
+  .fp-modal-box h3{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:19px; margin-bottom:8px; }
+  .fp-modal-sub{ font-size:13.5px; color:#4d5b52; margin-bottom:16px; line-height:1.5; }
+  .fp-modal-close{
+    position:absolute; top:14px; right:16px; background:none; border:none; font-size:16px;
+    cursor:pointer; color:#7a867e; line-height:1;
+  }
+  .fp-modal-close:hover{ color:#17251d; }
+  .fp-input{
+    width:100%; font-family:'Inter',sans-serif; font-size:14.5px; padding:12px 14px;
+    border-radius:10px; border:1.5px solid rgba(23,37,29,0.14); margin-bottom:6px;
+  }
+  .fp-otp-input{ font-size:22px; font-weight:700; letter-spacing:6px; text-align:center; }
+  .fp-modal-actions{ display:flex; gap:10px; margin-top:14px; }
+  .fp-countdown{ margin-top:14px; font-size:13px; font-weight:700; color:var(--green-deep); }
+  .fp-countdown.expiring{ color:var(--danger); }
+  .fp-resend-note{ margin-top:8px; font-size:12.5px; color:#7a867e; min-height:16px; }
+  .fp-success-icon{
+    width:56px; height:56px; margin:0 auto 14px; border-radius:50%;
+    background:rgba(154,223,143,0.3); color:var(--green-deep);
+    font-size:28px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  body.dark-mode .fp-modal-box{ background:#1f2022; color:#f2f3f1; }
+  body.dark-mode .fp-modal-sub{ color:#b7bcb9; }
+  body.dark-mode .fp-input{ background:#2a2b2e; color:#f2f3f1; border-color:rgba(242,243,241,0.16); }
+  body.dark-mode .fp-resend-note{ color:#b7bcb9; }
+  body.dark-mode .fp-modal-close{ color:#b7bcb9; }

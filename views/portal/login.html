@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ROLE_TITLE}} Login — Load Smart</title>
+<link rel="stylesheet" href="/assets/register.css">
+<link rel="stylesheet" href="/portal-assets/login.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Pvt. Ltd.</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+        </button>
+        <a class="back-link" href="/">← Back to home</a>
+      </div>
+    </header>
+
+    <div class="admin-shell">
+      <span class="form-eyebrow">{{ROLE_TITLE}} Portal</span>
+      <h1>Sign in as a {{ROLE_TITLE}}</h1>
+      <p class="intro">Enter the username you were given and the password you created when you registered as a {{ROLE_TITLE}}.</p>
+
+      <div id="errorBanner" class="error-banner" style="display:none;"></div>
+
+      <form method="POST" action="/login/{{ROLE}}" id="loginForm" novalidate>
+        <div class="field" style="margin-bottom:16px;">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" autocomplete="username">
+          <div class="field-error" id="usernameError">Please enter your username.</div>
+        </div>
+        <div class="field" style="margin-bottom:26px;">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password">
+          <div class="field-error" id="passwordError">Please enter your password.</div>
+        </div>
+        <button type="submit" class="submit-btn">Sign in</button>
+      </form>
+
+      <p class="form-footer-note" id="forgotPasswordRow" style="display:none;"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+      <p class="form-footer-note">New to Load Smart? <a href="/register/{{ROLE}}">Register as a {{ROLE_TITLE}}</a></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ---------- Forgot Password (Shipper only) ---------- -->
+<div class="fp-modal-overlay" id="fpModalOverlay">
+  <div class="fp-modal-box">
+    <button type="button" class="fp-modal-close" id="fpModalCloseBtn" aria-label="Close">✕</button>
+
+    <div id="fpStepEmail">
+      <h3>Reset Your Password</h3>
+      <p class="fp-modal-sub">Enter the email you registered with as a shipper.</p>
+      <input type="email" id="fpEmailInput" class="fp-input" placeholder="Registered email">
+      <div class="field-error" id="fpEmailError"></div>
+      <button type="button" class="submit-btn" id="fpSendOtpBtn" style="margin-top:14px;">Send OTP</button>
+    </div>
+
+    <div id="fpStepOtp" style="display:none;">
+      <h3>Verify Your Email</h3>
+      <p class="fp-modal-sub">Enter the OTP sent to <b id="fpOtpEmailDisplay"></b></p>
+      <input type="text" id="fpOtpInput" class="fp-input fp-otp-input" placeholder="Enter OTP" maxlength="6" inputmode="numeric">
+      <div class="field-error" id="fpOtpError" style="text-align:center;"></div>
+      <div class="fp-modal-actions">
+        <button type="button" class="submit-btn" id="fpVerifyOtpBtn" style="flex:1;">Verify OTP</button>
+        <button type="button" class="theme-toggle" id="fpResendOtpBtn" style="flex:1;">Resend OTP</button>
+      </div>
+      <p class="fp-countdown" id="fpCountdown"></p>
+      <p class="fp-resend-note" id="fpResendNote"></p>
+    </div>
+
+    <div id="fpStepReset" style="display:none;">
+      <h3>Set a New Password</h3>
+      <p class="fp-modal-sub" id="fpUsernameDisplay"></p>
+      <input type="password" id="fpNewPassword" class="fp-input" placeholder="New password" style="margin-bottom:10px;">
+      <input type="password" id="fpConfirmPassword" class="fp-input" placeholder="Confirm new password">
+      <div class="field-error" id="fpResetError"></div>
+      <span class="hint" style="display:block; margin-top:6px;">1–10 characters, must include an uppercase letter and an @ symbol.</span>
+      <button type="button" class="submit-btn" id="fpResetBtn" style="margin-top:14px;">Reset Password</button>
+    </div>
+
+    <div id="fpStepDone" style="display:none; text-align:center;">
+      <div class="fp-success-icon">✓</div>
+      <h3>Password reset successfully.</h3>
+      <p class="fp-modal-sub"><b>Username:</b> <span id="fpDoneUsername"></span></p>
+      <button type="button" class="submit-btn" id="fpDoneBtn" style="margin-top:10px;">Continue to Sign In</button>
+    </div>
+  </div>
+</div>
+
+<script src="/portal-assets/login.js"></script>
+<script src="/assets/password-toggle.js"></script>
+</body>
+</html>

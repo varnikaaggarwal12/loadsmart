@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Load Smart Pvt. Ltd. — On-demand freight, moved right.</title>
+<link rel="icon" href="/assets/logo.jpeg" type="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/assets/site-enhance.css">
+</head>
+<body>
+
+<!-- Short branded loading screen — auto-removes itself in site-enhance.js,
+     capped at ~900ms and skipped entirely under prefers-reduced-motion. -->
+<div id="lsLoader" class="ls-loader" aria-hidden="true">
+  <div class="ls-loader-word">LOAD<span> SMART</span></div>
+  <div class="ls-loader-road"><div class="ls-loader-truck">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v9H3z" stroke="#9adf8f" stroke-width="1.8"/><path d="M14 10h4l3 3v3h-7z" stroke="#9adf8f" stroke-width="1.8"/></svg>
+  </div></div>
+</div>
+
+<div class="device">
+  <div class="page">
+
+    <header>
+      <div class="logo">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Pvt. Ltd.</span>
+      </div>
+
+      <nav>
+        <a href="#top" id="navHomeLink" class="ls-nav-link ls-active">Home</a>
+        <a href="#services-grid" class="ls-nav-link" data-spy="services-grid">Services</a>
+        <a href="#fleet" class="ls-nav-link" data-spy="fleet">Fleet</a>
+        <a href="#tracking-demo" class="ls-nav-link" data-spy="tracking-demo">Tracking</a>
+        <div class="nav-dropdown" id="servicesDropdown">
+          <a href="#" class="nav-dropdown-trigger" id="servicesTrigger">Portal <span class="caret">▾</span></a>
+          <div class="nav-dropdown-menu" id="servicesMenu">
+            <a href="/" id="menuHomeLink">🏠 Home</a>
+            <a href="#" id="menuAboutLink">ℹ️ About</a>
+            <a href="#" id="menuContactLink">📞 Contact</a>
+            <a href="#" id="menuComplaintLink">📝 Complaint</a>
+            <a href="#" data-role="shipper" onclick="return openRoleModal(event,'shipper')">🚚 Shipper</a>
+            <a href="#" data-role="broker" id="brokerNavLink" onclick="return openRoleModal(event,'broker')">🤝 Broker</a>
+            <a href="#" data-role="carrier" onclick="return openRoleModal(event,'carrier')">🚛 Carrier</a>
+            <a href="/admin/login">🔐 Admin</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="ls-desktop-cta" style="display:flex; align-items:center; gap:12px;">
+        <a href="#quote-calculator" class="ls-nav-cta" data-magnetic>Get Quote</a>
+        <button class="download-btn">Download app</button>
+      </div>
+
+      <button type="button" class="ls-hamburger" id="lsHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="lsMobilePanel">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <!-- Mobile full-screen slide-in navigation panel -->
+    <div class="ls-mobile-panel" id="lsMobilePanel">
+      <div class="ls-mobile-panel-head">
+        <div class="logo"><img src="/assets/logo.jpeg" alt="Load Smart"></div>
+        <button type="button" class="ls-mobile-panel-close" id="lsMobilePanelClose" aria-label="Close menu">&times;</button>
+      </div>
+      <nav class="ls-mobile-links">
+        <a href="#top">Home <span class="arw">→</span></a>
+        <a href="#services-grid">Services <span class="arw">→</span></a>
+        <a href="#fleet">Fleet <span class="arw">→</span></a>
+        <a href="#tracking-demo">Tracking <span class="arw">→</span></a>
+        <a href="#" onclick="event.preventDefault(); openSimpleModal('aboutModal'); return false;">About <span class="arw">→</span></a>
+        <a href="#" onclick="event.preventDefault(); openSimpleModal('contactModal'); return false;">Contact <span class="arw">→</span></a>
+      </nav>
+      <a href="#quote-calculator" class="ls-nav-cta">Get Quote</a>
+      <button class="download-btn">Download app</button>
+      <div class="ls-mobile-portal-row">
+        <a href="#" onclick="return openRoleModal(event,'shipper')">Shipper</a>
+        <a href="#" id="brokerNavLinkMobile" onclick="return openRoleModal(event,'broker')">Broker</a>
+        <a href="#" onclick="return openRoleModal(event,'carrier')">Carrier</a>
+        <a href="/admin/login">Admin</a>
+      </div>
+    </div>
+
+    <!-- Shipper / Broker / Carrier: Login or Register modal -->
+    <div class="modal-overlay" id="roleModal">
+      <div class="modal-card">
+        <button class="modal-close" type="button" onclick="closeRoleModal()" aria-label="Close">&times;</button>
+        <span class="form-eyebrow" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--green-deep);background:rgba(154,223,143,0.28);padding:6px 12px;border-radius:999px;margin-bottom:14px;">
+          <span id="roleModalEyebrow">Portal</span>
+        </span>
+        <h3 id="roleModalTitle">Continue as Shipper</h3>
+        <p class="modal-sub">Already have an account, or joining Load Smart for the first time?</p>
+        <div class="modal-choice">
+          <button type="button" class="primary" id="roleModalLogin">
+            Login to my account <span class="arrow">→</span>
+          </button>
+          <button type="button" id="roleModalRegister">
+            Register a new account <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services > About -->
+    <div class="modal-overlay" id="aboutModal">
+      <div class="modal-card about-card">
+        <button class="modal-close" type="button" id="aboutCloseBtn" aria-label="Close">&times;</button>
+        <span class="form-eyebrow" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--green-deep);background:rgba(154,223,143,0.28);padding:6px 12px;border-radius:999px;margin-bottom:14px;">About</span>
+        <h3>About Load Smart</h3>
+        <div class="about-body">
+          <p>Load Smart is a freight-matching portal that connects <b>Shippers</b> (who need goods moved), <b>Carriers</b> (who own trucks and move the goods) and <b>Brokers</b> (who arrange transport on a shipper's behalf) in one place, with every account KYC-reviewed before it goes live.</p>
+          <h4>How the portal works</h4>
+          <ul>
+            <li><b>Registration &amp; review</b> — Shipper, Broker, and Carrier accounts each register with their business/KYC details. An admin reviews every submission and marks it Accepted, Pending, or Rejected before shipper-side tools unlock.</li>
+            <li><b>Shipper workflow</b> — once accepted, a shipper can get an instant freight-rate estimate, book a shipment directly, or send a manual rate request for a carrier/broker to quote against.</li>
+            <li><b>Carrier &amp; Broker workflow</b> — registered carriers and brokers appear as selectable providers on a shipper's rate request, and can be assigned to a shipment by the admin team.</li>
+            <li><b>Request / rate workflow</b> — a shipper's rate request goes to Admin, who can accept it as-is or send back a counter rate; the shipper then accepts or rejects that counter, and the final agreed rate is recorded either way.</li>
+            <li><b>Tracking workflow</b> — every booking or accepted rate request gets a unique Token/Order number. Admin updates its live location, status, and progress, and the shipper watches it update in real time on their Live Tracking dashboard.</li>
+          </ul>
+          <p class="about-note">Aadhaar numbers submitted at registration are checked for a valid checksum format only — this is not a verification against UIDAI's official database, and Load Smart does not claim any government affiliation, approval, or certification.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services > Contact -->
+    <div class="modal-overlay" id="contactModal">
+      <div class="modal-card">
+        <button class="modal-close" type="button" id="contactCloseBtn" aria-label="Close">&times;</button>
+        <span class="form-eyebrow" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--green-deep);background:rgba(154,223,143,0.28);padding:6px 12px;border-radius:999px;margin-bottom:14px;">Contact</span>
+        <h3>Get in touch</h3>
+        <p class="modal-sub">Have a question or need help with your account? Reach the Load Smart team directly.</p>
+        <div class="contact-number-box">
+          <span class="contact-icon">📞</span>
+          <div>
+            <div class="contact-label">Contact Number</div>
+            <div class="contact-number">8054763374</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services > Complaint -->
+    <div class="modal-overlay" id="complaintModal">
+      <div class="modal-card">
+        <button class="modal-close" type="button" id="complaintCloseBtn" aria-label="Close">&times;</button>
+        <span class="form-eyebrow" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--green-deep);background:rgba(154,223,143,0.28);padding:6px 12px;border-radius:999px;margin-bottom:14px;">Complaint</span>
+        <h3>Submit a complaint</h3>
+        <p class="modal-sub">Tell us about any problem you're facing on the website or portal.</p>
+
+        <div id="complaintUserTypeRow" class="complaint-usertype-row">
+          <label><input type="radio" name="complaintUserType" value="existing" id="complaintExistingRadio"> I'm a registered user</label>
+          <label><input type="radio" name="complaintUserType" value="new" id="complaintNewRadio" checked> New user</label>
+        </div>
+        <div id="complaintLoggedInNote" class="complaint-logged-in-note" style="display:none;"></div>
+
+        <div class="field" style="margin-bottom:12px;">
+          <label>Email ID</label>
+          <input type="email" id="complaintEmail" placeholder="you@example.com">
+        </div>
+        <div class="field" style="margin-bottom:12px;">
+          <label>Describe the problem</label>
+          <textarea id="complaintMessage" rows="4" placeholder="What went wrong, and where?"></textarea>
+        </div>
+        <div id="complaintError" class="modal-error-text" style="display:none;"></div>
+        <div id="complaintSuccess" class="modal-success-text" style="display:none;"></div>
+        <button type="button" class="primary" id="complaintSubmitBtn" style="width:100%;">Submit Complaint</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-video-wrap hero-green-bg">
+        <!-- ---------- Original cinematic hero animation ----------
+             Pure CSS/SVG — no video file, no stock footage, no external
+             assets. Sits behind the existing overlay/text exactly like a
+             looping background video would; respects prefers-reduced-motion
+             (see CSS) by freezing to a still frame instead of playing. -->
+        <div class="hero-cinema" aria-hidden="true">
+          <div class="hero-sky"></div>
+          <div class="hero-sun"></div>
+          <div class="hero-skyline"></div>
+          <div class="hero-road">
+            <div class="hero-road-lines"></div>
+          </div>
+          <div class="hero-truck hero-truck-1">
+            <svg viewBox="0 0 220 90" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="24" width="132" height="52" rx="6" fill="#0e3a24"/>
+              <text x="70" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="800" fill="#9adf8f">LOADSMART</text>
+              <text x="70" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#c9f0bf">Pvt. Ltd.</text>
+              <rect x="14" y="52" width="112" height="4" fill="#9adf8f" opacity="0.45"/>
+              <rect x="138" y="38" width="44" height="38" rx="4" fill="#17251d"/>
+              <rect x="146" y="46" width="18" height="16" rx="2" fill="#bfe9c9"/>
+              <circle cx="36" cy="80" r="11" fill="#141414"/><circle cx="36" cy="80" r="5" fill="#666"/>
+              <circle cx="90" cy="80" r="11" fill="#141414"/><circle cx="90" cy="80" r="5" fill="#666"/>
+              <circle cx="160" cy="80" r="11" fill="#141414"/><circle cx="160" cy="80" r="5" fill="#666"/>
+            </svg>
+          </div>
+          <div class="hero-truck hero-truck-2">
+            <svg viewBox="0 0 220 90" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="28" width="120" height="46" rx="6" fill="#e8722c"/>
+              <text x="64" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="800" fill="#fff">LOADSMART</text>
+              <rect x="126" y="40" width="42" height="34" rx="4" fill="#3d2a12"/>
+              <rect x="133" y="47" width="17" height="15" rx="2" fill="#ffd9b3"/>
+              <circle cx="32" cy="78" r="10" fill="#141414"/><circle cx="32" cy="78" r="4.5" fill="#666"/>
+              <circle cx="80" cy="78" r="10" fill="#141414"/><circle cx="80" cy="78" r="4.5" fill="#666"/>
+              <circle cx="146" cy="78" r="10" fill="#141414"/><circle cx="146" cy="78" r="4.5" fill="#666"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="hero-video-overlay"></div>
+
+        <!-- Floating logistics icons + glowing route markers — subtle
+             visual movement layered over the cinematic hero, purely
+             CSS-animated (see .hero-float-icon / .hero-glow-marker in
+             site-enhance.css), off under prefers-reduced-motion. -->
+        <div class="hero-float-icon f1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="13" height="10" rx="2" stroke="#0e3a24" stroke-width="1.6"/><path d="M16 11h3l2 2.5V17h-5z" stroke="#0e3a24" stroke-width="1.6"/><circle cx="7.5" cy="18.5" r="1.4" stroke="#0e3a24" stroke-width="1.3"/><circle cx="17" cy="18.5" r="1.4" stroke="#0e3a24" stroke-width="1.3"/></svg></div>
+        <div class="hero-float-icon f2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11.2A7 7 0 0112 3a7 7 0 017 6.8C19 14.8 12 21 12 21z" stroke="#e8722c" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="#e8722c" stroke-width="1.5"/></svg></div>
+        <div class="hero-float-icon f3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 21V9l9-6 9 6v12" stroke="#0e3a24" stroke-width="1.6"/><path d="M8 21v-7h8v7" stroke="#0e3a24" stroke-width="1.6"/></svg></div>
+        <div class="hero-float-icon f4" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#e8722c" stroke-width="1.6"/><path d="M3 10h18M9 4v16" stroke="#e8722c" stroke-width="1.4"/></svg></div>
+        <span class="hero-glow-marker m1" aria-hidden="true"></span>
+        <span class="hero-glow-marker m2" aria-hidden="true"></span>
+        <span class="hero-glow-marker m3" aria-hidden="true"></span>
+        <svg class="hero-route-dotted" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M26 38 Q 45 20 60 30 T 78 50" />
+        </svg>
+
+        <div class="hero-text-col">
+          <h1 class="ls-hero-headline"><span class="ls-hh-line">Move every load with</span><br><span class="ls-hh-line ls-hh-delay">certified, tracked trucking.</span></h1>
+          <p class="lede">Shippers, brokers and truckers — matched, verified and moving freight in one place.</p>
+
+          <div class="hero-cta-row">
+            <a href="#quote-calculator" class="hero-cta hero-cta-primary" data-magnetic>
+              Get a Quote
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="#tracking-demo" class="hero-cta hero-cta-secondary" data-magnetic>
+              Track Shipment
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+
+          <div class="store-buttons">
+            <a href="#" class="store-pill">
+              <svg viewBox="0 0 384 512" fill="#fff"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C60.7 141 0 184.3 0 272.9c0 26.2 4.8 53.3 14.4 81.2 12.8 37 59 127.8 107.2 126.3 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-83.4 102.6-120.5-65.2-30.7-57.7-90-57.7-91.2zM256.4 88.9c26.9-32 24.5-61.2 23.7-71.7-23.8 1.4-51.4 16.4-67.2 34.8-17.5 19.6-27.8 43.9-25.6 71.2 25.9 2 49.5-11 69.1-34.3z"/></svg>
+              <span><span class="top">Download on the</span><span class="bottom">App Store</span></span>
+            </a>
+            <a href="#" class="store-pill">
+              <svg viewBox="0 0 512 512" fill="#fff"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.4c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34-65.7 64.4 65.7 64.5 60.1-34.1c18-14.3 18-46.6-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+              <span><span class="top">GET IT ON</span><span class="bottom">Google Play</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- Role selection cards — overlapping the hero's bottom
+           edge, per the requested "below/overlapping the hero video"
+           layout. Shipper/Broker/Carrier reuse the existing
+           openRoleModal(event, role) function used everywhere else on this
+           page; Admin reuses the existing /admin/login link. No new
+           navigation logic — same routes/panels as the header nav. -->
+      <div class="role-card-overlap">
+        <a href="#" class="role-card role-card-shipper" onclick="return openRoleModal(event,'shipper')">
+          <span class="role-card-icon">🚚</span>
+          <span class="role-card-name">I am a Shipper</span>
+          <span class="role-card-desc">Post loads, compare quotes and ship with confidence.</span>
+          <span class="role-card-cta">Get started <span class="arrow">→</span></span>
+        </a>
+        <a href="#" class="role-card role-card-broker" id="brokerRoleCard" onclick="return openRoleModal(event,'broker')">
+          <span class="role-card-icon">🤝</span>
+          <span class="role-card-name">I am a Broker</span>
+          <span class="role-card-desc">Find loads, connect with carriers and manage your shipments.</span>
+          <span class="role-card-cta">Get started <span class="arrow">→</span></span>
+        </a>
+        <a href="#" class="role-card role-card-carrier" onclick="return openRoleModal(event,'carrier')">
+          <span class="role-card-icon">🚛</span>
+          <span class="role-card-name">I am a Carrier</span>
+          <span class="role-card-desc">Find loads, assign drivers and keep your trucks moving.</span>
+          <span class="role-card-cta">Get started <span class="arrow">→</span></span>
+        </a>
+        <a href="/admin/login" class="role-card role-card-admin">
+          <span class="role-card-icon">🔐</span>
+          <span class="role-card-name">Admin Login</span>
+          <span class="role-card-desc">Staff sign-in to review accounts and manage shipments.</span>
+          <span class="role-card-cta">Sign in <span class="arrow">→</span></span>
+        </a>
+      </div>
+
+      <div class="visual-band">
+        <div class="badge-float badge-1"><span class="dot"></span> Live GPS tracking</div>
+        <div class="badge-float badge-2"><span class="dot"></span> Verified carriers</div>
+
+        <div class="laptop-mock">
+          <div class="laptop-screen">
+            <div class="lm-topbar">
+              <span class="lm-logo">LOADSMART</span>
+              <span class="lm-sub">Shipper Portal</span>
+            </div>
+            <div class="lm-body">
+              <span class="lm-eyebrow">SHIPPER PORTAL · LIVE TRACKING</span>
+              <h4>Live Tracking Dashboard</h4>
+              <p class="lm-lede">Search by Token/Order No. or by route, then select an order to see live truck location and progress.</p>
+
+              <div class="lm-search">
+                <div class="lm-field"><label>TOKEN / ORDER NO.</label><span>🔍 e.g. LS4820193765</span></div>
+                <div class="lm-field"><label>FROM CITY</label><span>🔍 Origin city</span></div>
+                <div class="lm-field"><label>TO CITY</label><span>🔍 Destination city</span></div>
+              </div>
+
+              <div class="lm-panels">
+                <div class="lm-order-card">
+                  <span class="lm-token">LS6988246510</span>
+                  <div class="lm-route">Assam → Bihar</div>
+                  <div class="lm-meta">Fragile Goods · 10 tons</div>
+                  <span class="lm-status">OUT FOR DELIVERY</span>
+                </div>
+                <div class="lm-detail">
+                  <div class="lm-detail-head">
+                    <div class="lm-detail-route">Assam → Bihar</div>
+                    <span class="lm-status">OUT FOR DELIVERY</span>
+                  </div>
+                  <div class="lm-detail-token">Token No. LS6988246510 <span class="lm-copy">📋 Copy</span></div>
+                  <div class="lm-route-line">
+                    <div class="lm-point"><span class="lm-lbl">ORIGIN</span><span class="lm-val">Assam</span></div>
+                    <div class="lm-dash"></div>
+                    <div class="lm-point"><span class="lm-lbl">CURRENT LOCATION</span><span class="lm-val current">Assam</span></div>
+                    <div class="lm-dash"></div>
+                    <div class="lm-point"><span class="lm-lbl">DESTINATION</span><span class="lm-val">Bihar</span></div>
+                  </div>
+                  <div class="lm-progress"><span style="width:90%"></span></div>
+                  <div class="lm-progress-labels"><span>90% of route completed</span><span>74 km remaining</span></div>
+                  <div class="lm-info-grid">
+                    <div><span class="k">MATERIAL</span><span class="v">Fragile Goods</span></div>
+                    <div><span class="k">WEIGHT</span><span class="v">10 tons</span></div>
+                    <div><span class="k">TOTAL DISTANCE</span><span class="v">739 km</span></div>
+                    <div><span class="k">CARRIER</span><span class="v">Not yet assigned</span></div>
+                  </div>
+                  <div class="lm-banner">📦 Booking created — awaiting admin confirmation.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="laptop-base"></div>
+
+          <div class="carrier-corner-card">
+            <div class="ccc-head">
+              <span class="ccc-title">Carrier Network</span>
+              <span class="ccc-live"><span class="dot"></span> Live</span>
+            </div>
+            <div class="ccc-stats">
+              <div class="ccc-stat"><span class="ccc-num">1,842</span><span class="ccc-label">verified carriers</span></div>
+              <div class="ccc-stat"><span class="ccc-num">96%</span><span class="ccc-label">On-time delivery</span></div>
+              <div class="ccc-stat"><span class="ccc-num">4.8</span><span class="ccc-label">Avg. carrier rating</span></div>
+            </div>
+            <div class="ccc-chart">
+              <div class="bar" style="height:40%"></div>
+              <div class="bar" style="height:58%"></div>
+              <div class="bar" style="height:78%"></div>
+              <div class="bar" style="height:52%"></div>
+              <div class="bar" style="height:34%"></div>
+              <div class="bar" style="height:62%"></div>
+              <div class="bar now" style="height:100%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tracker-panel hero-tracker">
+          <div class="tp-head">
+            <span class="tp-title">Live Shipment</span>
+            <span class="tp-chip">In Transit</span>
+          </div>
+          <div class="tp-route">
+            <div class="city">Delhi<small>Pickup</small></div>
+            <div class="tp-line">
+              <span class="truck-dot">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v9H3z" stroke="#0c2c1c" stroke-width="1.8"/><path d="M14 10h4l3 3v3h-7z" stroke="#0c2c1c" stroke-width="1.8"/></svg>
+              </span>
+            </div>
+            <div class="city" style="text-align:right">Mumbai<small>Drop-off</small></div>
+          </div>
+          <div class="tp-progress"><span></span></div>
+          <div class="tp-foot">
+            <span>Order #LS-48210</span>
+            <span><b>14h 20m</b> ETA</span>
+          </div>
+        </div>
+        </div>
+    </section>
+
+    <section class="green-panel" id="services">
+      <div class="copy">
+        <h2>Here to move your freight with care and precision, load after load.</h2>
+        <div class="stat-row">
+          <span class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v9H3z" stroke="#9adf8f" stroke-width="1.6"/><path d="M14 10h4l3 3v3h-7z" stroke="#9adf8f" stroke-width="1.6"/><circle cx="7" cy="18" r="1.6" stroke="#9adf8f" stroke-width="1.4"/><circle cx="17" cy="18" r="1.6" stroke="#9adf8f" stroke-width="1.4"/></svg>
+          </span>
+          <div class="stat-label">On-demand<br><small>freight &amp; trucking services</small></div>
+        </div>
+      </div>
+
+      <div class="panel-visual">
+        <div class="tracker-panel">
+          <div class="tp-head">
+            <span class="tp-title">Live Shipment</span>
+            <span class="tp-chip">In Transit</span>
+          </div>
+          <div class="tp-route">
+            <div class="city">Delhi<small>Pickup</small></div>
+            <div class="tp-line">
+              <span class="truck-dot">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v9H3z" stroke="#0c2c1c" stroke-width="1.8"/><path d="M14 10h4l3 3v3h-7z" stroke="#0c2c1c" stroke-width="1.8"/></svg>
+              </span>
+            </div>
+            <div class="city" style="text-align:right">Mumbai<small>Drop-off</small></div>
+          </div>
+          <div class="tp-progress"><span></span></div>
+          <div class="tp-foot">
+            <span>Order #LS-48210</span>
+            <span><b>14h 20m</b> ETA</span>
+          </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================= STATS — animated counters ================= -->
+    <section class="stats-section" id="stats">
+      <div class="stats-grid" data-stagger>
+        <div class="stat-card ls-reveal ls-reveal-scale">
+          <span class="stat-number" data-target="10000" data-suffix="+">0</span>
+          <div class="stat-caption">Shipments Delivered</div>
+        </div>
+        <div class="stat-card ls-reveal ls-reveal-scale">
+          <span class="stat-number" data-target="500" data-suffix="+">0</span>
+          <div class="stat-caption">Trucks in Network</div>
+        </div>
+        <div class="stat-card ls-reveal ls-reveal-scale">
+          <span class="stat-number" data-target="120" data-suffix="+">0</span>
+          <div class="stat-caption">Cities Covered</div>
+        </div>
+        <div class="stat-card ls-reveal ls-reveal-scale">
+          <span class="stat-number" data-target="98" data-suffix="%">0</span>
+          <div class="stat-caption">On-Time Delivery</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES GRID ================= -->
+    <section class="services-grid-section ls-section" id="services-grid">
+      <div class="ls-section-head ls-reveal">
+        <span class="ls-eyebrow">What we move</span>
+        <h2>Freight services built around your cargo</h2>
+        <p>From a single pallet to a full container, choose the service that matches how — and how fast — your freight needs to move.</p>
+      </div>
+      <div class="services-grid" data-stagger>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="13" height="9" rx="2" stroke="#0e3a24" stroke-width="1.6"/><path d="M15 12h4l3 3v2h-7z" stroke="#0e3a24" stroke-width="1.6"/><circle cx="7" cy="19" r="1.7" stroke="#0e3a24" stroke-width="1.4"/><circle cx="18" cy="19" r="1.7" stroke="#0e3a24" stroke-width="1.4"/></svg></span>
+          <h3>Full Truck Load</h3>
+          <p>Book an entire truck for large shipments — moves door-to-door with nothing shared on the way.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="7" height="7" rx="1.4" stroke="#0e3a24" stroke-width="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.4" stroke="#0e3a24" stroke-width="1.6" opacity="0.4"/><rect x="3" y="14" width="7" height="7" rx="1.4" stroke="#0e3a24" stroke-width="1.6" opacity="0.4"/><rect x="13" y="14" width="7" height="7" rx="1.4" stroke="#0e3a24" stroke-width="1.6"/></svg></span>
+          <h3>Part Load</h3>
+          <p>Share truck space with other shippers and pay only for the capacity your cargo actually needs.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" stroke="#0e3a24" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <h3>Express Delivery</h3>
+          <p>Priority dispatch and a dedicated route for time-critical freight, tracked hour by hour.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11.2A7 7 0 0112 3a7 7 0 017 6.8C19 14.8 12 21 12 21z" stroke="#0e3a24" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="#0e3a24" stroke-width="1.5"/></svg></span>
+          <h3>Last Mile Delivery</h3>
+          <p>Reliable final-leg delivery from your nearest hub straight to the doorstep, across our city network.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 4l9 6.5" stroke="#0e3a24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 9.5V20h14V9.5" stroke="#0e3a24" stroke-width="1.6"/><path d="M10 20v-6h4v6" stroke="#0e3a24" stroke-width="1.6"/></svg></span>
+          <h3>Warehousing</h3>
+          <p>Secure storage and cross-docking at distribution hubs positioned along major freight corridors.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1.5" stroke="#0e3a24" stroke-width="1.6"/><path d="M3 10h18M8 6v12M14 6v12" stroke="#0e3a24" stroke-width="1.4"/></svg></span>
+          <h3>Container Transport</h3>
+          <p>Container movement for import/export and bulk industrial cargo, matched to the right chassis.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card ls-reveal">
+          <span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M5 6l14 12M19 6 5 18M2 12h20" stroke="#0e3a24" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <h3>Cold Chain Logistics</h3>
+          <p>Temperature-controlled trucking for perishables and pharma, monitored end-to-end.</p>
+          <a href="#quote-calculator" class="service-cta">Get a quote <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INTERACTIVE ROUTE MAP ================= -->
+    <section class="route-map-section ls-section" id="route-map">
+      <div class="ls-section-head ls-reveal">
+        <span class="ls-eyebrow">Live network</span>
+        <h2>An interactive look at our freight network</h2>
+        <p>Delhi is our central distribution hub, with active lanes running to every major metro. Select a city to preview its route status.</p>
+      </div>
+      <div class="route-map-shell">
+        <div class="route-map-canvas ls-reveal ls-reveal-left" id="lsRouteCanvas">
+          <div class="route-map-grid" aria-hidden="true"></div>
+          <svg id="lsRouteLines" class="route-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div id="lsRouteNodes" class="route-map-nodes" role="group" aria-label="Logistics network map — select a city for its live route status"></div>
+        </div>
+        <div class="route-info-panel ls-reveal ls-reveal-right" id="lsRouteInfoPanel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="how-it-works-section ls-section" id="how-it-works">
+      <div class="ls-section-head ls-reveal">
+        <span class="ls-eyebrow">Simple process</span>
+        <h2>From quote to delivery in six steps</h2>
+        <p>The same flow every shipper, broker and carrier moves through on the Load Smart platform.</p>
+      </div>
+      <div class="hiw-track" data-stagger>
+        <div class="hiw-step ls-reveal"><span class="hiw-num">1</span><h4>Request Quote</h4><p>Tell us your pickup, destination and cargo details for an instant estimate.</p></div>
+        <div class="hiw-step ls-reveal"><span class="hiw-num">2</span><h4>Confirm Booking</h4><p>Review the rate and confirm — your booking is logged with a unique token number.</p></div>
+        <div class="hiw-step ls-reveal"><span class="hiw-num">3</span><h4>Truck Assigned</h4><p>A verified carrier and truck from our network are matched to your route.</p></div>
+        <div class="hiw-step ls-reveal"><span class="hiw-num">4</span><h4>Shipment Picked Up</h4><p>Your cargo is loaded and the driver begins the journey to its destination.</p></div>
+        <div class="hiw-step ls-reveal"><span class="hiw-num">5</span><h4>Live Tracking</h4><p>Watch real-time status and location updates all the way to drop-off.</p></div>
+        <div class="hiw-step ls-reveal"><span class="hiw-num">6</span><h4>Delivery Completed</h4><p>Proof of delivery is captured and your shipment is marked complete.</p></div>
+      </div>
+    </section>
+
+    <!-- ================= FLEET SHOWCASE ================= -->
+    <section class="fleet-section ls-section" id="fleet">
+      <div class="ls-section-head ls-reveal">
+        <span class="ls-eyebrow">Our fleet</span>
+        <h2>A truck for every kind of load</h2>
+        <p>Browse our fleet by size and payload, then send it straight into the quote calculator below.</p>
+      </div>
+      <div class="fleet-scroller" data-stagger>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="8" y="34" width="70" height="34" rx="5" fill="#12492e"/><rect x="78" y="26" width="34" height="42" rx="4" fill="#e8722c"/><rect x="86" y="34" width="16" height="14" rx="2" fill="#ffe1c2"/><circle cx="30" cy="72" r="9" fill="#141414"/><circle cx="30" cy="72" r="4" fill="#666"/><circle cx="96" cy="72" r="9" fill="#141414"/><circle cx="96" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>Mini Truck</h4>
+          <p class="fleet-usage">Best for small, city-local loads and quick pickups.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">750 kg</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">6 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="Mini Truck">Book This Truck</button>
+        </div>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="6" y="32" width="76" height="36" rx="5" fill="#0e3a24"/><rect x="82" y="24" width="38" height="44" rx="4" fill="#e8722c"/><rect x="90" y="32" width="17" height="15" rx="2" fill="#ffe1c2"/><circle cx="30" cy="72" r="9" fill="#141414"/><circle cx="30" cy="72" r="4" fill="#666"/><circle cx="100" cy="72" r="9" fill="#141414"/><circle cx="100" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>Pickup</h4>
+          <p class="fleet-usage">Light commercial goods and short-haul intercity runs.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">1.5 tons</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">8 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="Pickup">Book This Truck</button>
+        </div>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="4" y="28" width="90" height="40" rx="5" fill="#12492e"/><rect x="94" y="20" width="42" height="48" rx="4" fill="#0e3a24"/><rect x="102" y="28" width="18" height="16" rx="2" fill="#bfe9c9"/><circle cx="28" cy="72" r="9" fill="#141414"/><circle cx="28" cy="72" r="4" fill="#666"/><circle cx="66" cy="72" r="9" fill="#141414"/><circle cx="66" cy="72" r="4" fill="#666"/><circle cx="112" cy="72" r="9" fill="#141414"/><circle cx="112" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>14-ft Truck</h4>
+          <p class="fleet-usage">General cargo and regional distribution runs.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">4 tons</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">14 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="14-ft Truck">Book This Truck</button>
+        </div>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="4" y="26" width="98" height="42" rx="5" fill="#0e3a24"/><rect x="102" y="18" width="44" height="50" rx="4" fill="#e8722c"/><rect x="110" y="26" width="19" height="17" rx="2" fill="#ffe1c2"/><circle cx="26" cy="72" r="9" fill="#141414"/><circle cx="26" cy="72" r="4" fill="#666"/><circle cx="66" cy="72" r="9" fill="#141414"/><circle cx="66" cy="72" r="4" fill="#666"/><circle cx="120" cy="72" r="9" fill="#141414"/><circle cx="120" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>17-ft Truck</h4>
+          <p class="fleet-usage">Mid-size industrial and retail distribution loads.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">7 tons</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">17 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="17-ft Truck">Book This Truck</button>
+        </div>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="2" y="24" width="104" height="44" rx="5" fill="#12492e"/><rect x="106" y="16" width="46" height="52" rx="4" fill="#0e3a24"/><rect x="114" y="24" width="20" height="18" rx="2" fill="#bfe9c9"/><circle cx="24" cy="72" r="9" fill="#141414"/><circle cx="24" cy="72" r="4" fill="#666"/><circle cx="70" cy="72" r="9" fill="#141414"/><circle cx="70" cy="72" r="4" fill="#666"/><circle cx="128" cy="72" r="9" fill="#141414"/><circle cx="128" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>19-ft Truck</h4>
+          <p class="fleet-usage">Heavier general cargo across longer regional hauls.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">9 tons</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">19 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="19-ft Truck">Book This Truck</button>
+        </div>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="2" y="20" width="112" height="48" rx="4" fill="#e8722c"/><rect x="4" y="24" width="108" height="6" fill="#fff" opacity="0.35"/><rect x="114" y="14" width="42" height="54" rx="4" fill="#0e3a24"/><rect x="121" y="22" width="19" height="17" rx="2" fill="#bfe9c9"/><circle cx="24" cy="72" r="9" fill="#141414"/><circle cx="24" cy="72" r="4" fill="#666"/><circle cx="72" cy="72" r="9" fill="#141414"/><circle cx="72" cy="72" r="4" fill="#666"/><circle cx="136" cy="72" r="9" fill="#141414"/><circle cx="136" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>32-ft Container</h4>
+          <p class="fleet-usage">Bulk industrial cargo, import/export container moves.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">18 tons</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">32 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="32-ft Container">Book This Truck</button>
+        </div>
+
+        <div class="fleet-card ls-reveal">
+          <div class="fleet-truck-visual"><svg viewBox="0 0 160 90"><rect x="0" y="18" width="120" height="50" rx="4" fill="#0e3a24"/><rect x="2" y="22" width="116" height="6" fill="#fff" opacity="0.3"/><rect x="122" y="12" width="38" height="56" rx="4" fill="#e8722c"/><rect x="129" y="20" width="17" height="17" rx="2" fill="#ffe1c2"/><circle cx="22" cy="72" r="9" fill="#141414"/><circle cx="22" cy="72" r="4" fill="#666"/><circle cx="58" cy="72" r="9" fill="#141414"/><circle cx="58" cy="72" r="4" fill="#666"/><circle cx="94" cy="72" r="9" fill="#141414"/><circle cx="94" cy="72" r="4" fill="#666"/><circle cx="142" cy="72" r="9" fill="#141414"/><circle cx="142" cy="72" r="4" fill="#666"/></svg></div>
+          <h4>Trailer</h4>
+          <p class="fleet-usage">Maximum-capacity hauls for heavy machinery and bulk freight.</p>
+          <div class="fleet-meta-row"><span class="k">Max payload</span><span class="v">25+ tons</span></div>
+          <div class="fleet-meta-row"><span class="k">Body size</span><span class="v">40 ft</span></div>
+          <button type="button" class="fleet-book-btn" data-vehicle="Trailer">Book This Truck</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= FREIGHT QUOTE CALCULATOR ================= -->
+    <section class="quote-section ls-section ls-section-dark" id="quote-calculator">
+      <div class="ls-section-inner">
+        <div class="ls-section-head ls-reveal">
+          <span class="ls-eyebrow">Instant estimate</span>
+          <h2>Calculate your freight quote</h2>
+          <p>Enter your route and cargo details for an instant, illustrative estimate — log in for a final, bookable rate.</p>
+        </div>
+        <div class="quote-shell ls-reveal ls-reveal-scale">
+          <form class="quote-form" id="quoteForm" novalidate>
+            <div class="qf-row">
+              <div class="qf-field">
+                <label for="quotePickup">Pickup location</label>
+                <input type="text" id="quotePickup" placeholder="e.g. Delhi" autocomplete="off" required>
+              </div>
+              <div class="qf-field">
+                <label for="quoteDestination">Destination</label>
+                <input type="text" id="quoteDestination" placeholder="e.g. Mumbai" autocomplete="off" required>
+              </div>
+            </div>
+            <div class="qf-row">
+              <div class="qf-field">
+                <label for="quoteCargo">Cargo type</label>
+                <select id="quoteCargo">
+                  <option>General Cargo</option>
+                  <option>Fragile Goods</option>
+                  <option>Perishable / Cold Chain</option>
+                  <option>Heavy Machinery</option>
+                  <option>Hazardous Material</option>
+                  <option>Livestock</option>
+                </select>
+              </div>
+              <div class="qf-field">
+                <label for="quoteWeight">Cargo weight (tons)</label>
+                <input type="number" id="quoteWeight" placeholder="e.g. 5" min="0.1" step="0.1" required>
+              </div>
+            </div>
+            <div class="qf-field">
+              <label for="quoteVehicle">Vehicle type</label>
+              <select id="quoteVehicle">
+                <option>Mini Truck</option>
+                <option>Pickup</option>
+                <option selected>14-ft Truck</option>
+                <option>17-ft Truck</option>
+                <option>19-ft Truck</option>
+                <option>32-ft Container</option>
+                <option>Trailer</option>
+              </select>
+            </div>
+            <button type="submit" class="quote-submit" id="quoteSubmitBtn">Calculate Estimate</button>
+            <p class="quote-error" id="quoteError" style="display:none;"></p>
+          </form>
+          <div class="quote-result qr-empty" id="quoteResult">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#8fae93" stroke-width="1.4"/><circle cx="12" cy="12" r="9" stroke="#8fae93" stroke-width="1.4"/></svg>
+            <p>Fill in the form to see your estimated freight cost, distance and transit time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SHIPMENT TRACKING DEMO ================= -->
+    <section class="tracking-demo-section ls-section" id="tracking-demo">
+      <div class="ls-section-head ls-reveal">
+        <span class="ls-eyebrow">Track a shipment</span>
+        <h2>See your shipment's journey</h2>
+        <p id="trackingModeIntro">Enter any tracking / consignment number to preview the live journey timeline.</p>
+      </div>
+
+      <div class="tracking-mode-tabs ls-reveal" id="trackingModeTabs" role="tablist" aria-label="Choose how to track">
+        <button type="button" class="tracking-mode-tab active" data-mode="token" role="tab" aria-selected="true">Token / Consignment No.</button>
+        <button type="button" class="tracking-mode-tab" data-mode="phone" role="tab" aria-selected="false">Phone Number</button>
+      </div>
+
+      <form class="tracking-input-row ls-reveal" id="trackingForm">
+        <label for="trackingIdInput" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Tracking or consignment number</label>
+        <input type="text" id="trackingIdInput" placeholder="e.g. LS4820193765">
+        <button type="submit" class="tracking-submit">Track Shipment</button>
+      </form>
+      <p class="tracking-error" id="trackingError" role="alert" style="display:none;"></p>
+      <p class="tracking-hint" id="trackingTokenHint">Demo preview — generates an illustrative journey from your tracking number. No login required.</p>
+      <div class="tracking-result" id="trackingResult"></div>
+
+      <!-- Real lookup (unlike the Token No. box above, this queries actual
+           shipments by your registered mobile number) — no login required,
+           results are limited to your own shipments' route/status only. -->
+      <form class="tracking-input-row ls-reveal" id="trackingPhoneForm" style="display:none;">
+        <label for="trackingPhoneInput" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Registered mobile number</label>
+        <input type="tel" id="trackingPhoneInput" placeholder="e.g. 98765 43210" autocomplete="tel">
+        <button type="submit" class="tracking-submit">Find My Shipments</button>
+      </form>
+      <p class="tracking-error" id="trackingPhoneError" role="alert" style="display:none;"></p>
+      <p class="tracking-hint" id="trackingPhoneHint" style="display:none;">Real lookup — shows shipments booked with this mobile number. No login required.</p>
+      <div class="tracking-result" id="trackingPhoneResult"></div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="testimonials-section ls-section" id="testimonials">
+      <div class="ls-section-head ls-reveal">
+        <span class="ls-eyebrow">Trusted by shippers</span>
+        <h2>What our customers say</h2>
+      </div>
+      <div class="testimonial-viewport" id="testimonialViewport">
+        <div class="testimonial-slide active">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote">"Load Smart's live tracking means we no longer call our carriers for updates — we just check the dashboard. Our on-time rate went up within the first month."</p>
+            <div class="testimonial-person"><span class="testimonial-avatar">RS</span><div><div class="testimonial-name">Ritika Sharma</div><div class="testimonial-role">Supply Chain Manager, Textile Exports</div></div></div>
+          </div>
+        </div>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote">"Getting a rate used to mean five phone calls. Now I get an estimate in under a minute and book the same day."</p>
+            <div class="testimonial-person"><span class="testimonial-avatar">VD</span><div><div class="testimonial-name">Vikram Desai</div><div class="testimonial-role">Operations Head, Electronics Distribution</div></div></div>
+          </div>
+        </div>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★☆</div>
+            <p class="testimonial-quote">"As a small D2C brand, the part-load option is what makes Load Smart work for us — we're not paying for a full truck we don't need."</p>
+            <div class="testimonial-person"><span class="testimonial-avatar">FS</span><div><div class="testimonial-name">Farida Sheikh</div><div class="testimonial-role">Founder, Home Goods Brand</div></div></div>
+          </div>
+        </div>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote">"Cold chain freight is unforgiving — one delay and the batch is gone. Load Smart's carriers have kept every cold shipment on schedule this year."</p>
+            <div class="testimonial-person"><span class="testimonial-avatar">AN</span><div><div class="testimonial-name">Arjun Nair</div><div class="testimonial-role">Logistics Coordinator, Pharma Distribution</div></div></div>
+          </div>
+        </div>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote">"Onboarding as a carrier was straightforward, and the load matching keeps our trucks moving instead of sitting idle between routes."</p>
+            <div class="testimonial-person"><span class="testimonial-avatar">MI</span><div><div class="testimonial-name">Meera Iyer</div><div class="testimonial-role">Procurement Lead, Auto Parts Manufacturing</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-controls">
+        <button type="button" class="testimonial-arrow" id="testimonialPrev" aria-label="Previous testimonial"><svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="testimonial-dots">
+          <button type="button" class="active" aria-label="Testimonial 1" aria-current="true"></button>
+          <button type="button" aria-label="Testimonial 2"></button>
+          <button type="button" aria-label="Testimonial 3"></button>
+          <button type="button" aria-label="Testimonial 4"></button>
+          <button type="button" aria-label="Testimonial 5"></button>
+        </div>
+        <button type="button" class="testimonial-arrow" id="testimonialNext" aria-label="Next testimonial"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <div class="footer-route-strip" aria-hidden="true">
+      <div class="frs-line"></div>
+      <div class="frs-truck">
+        <svg viewBox="0 0 220 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="24" width="132" height="52" rx="6" fill="#9adf8f"/>
+          <text x="70" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="800" fill="#0e3a24">LOADSMART</text>
+          <rect x="138" y="38" width="44" height="38" rx="4" fill="#0e3a24"/>
+          <rect x="146" y="46" width="18" height="16" rx="2" fill="#c9f0bf"/>
+          <circle cx="36" cy="80" r="11" fill="#12492e"/><circle cx="36" cy="80" r="5" fill="#0c2c1c"/>
+          <circle cx="90" cy="80" r="11" fill="#12492e"/><circle cx="90" cy="80" r="5" fill="#0c2c1c"/>
+          <circle cx="160" cy="80" r="11" fill="#12492e"/><circle cx="160" cy="80" r="5" fill="#0c2c1c"/>
+        </svg>
+      </div>
+    </div>
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo"><img src="/assets/logo.jpeg" alt="Load Smart"><span>Load Smart Pvt. Ltd.</span></div>
+          <p>A freight-matching platform connecting shippers, brokers and carriers — every account KYC-reviewed, every shipment tracked, load after load.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Load Smart on Facebook"><svg viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.66 0-3 1.34-3 3v2H8v3h3v7h3v-7h3l1-3h-4v-2c0-.55.45-1 1-1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></a>
+            <a href="#" aria-label="Load Smart on Twitter / X"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4l16 16M20 4 4 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+            <a href="#" aria-label="Load Smart on LinkedIn"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.3"/><path d="M7 10v7M7 7v.01M12 17v-4.5c0-1.4 1-2.5 2.5-2.5S17 11.1 17 12.5V17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></a>
+            <a href="#" aria-label="Load Smart on Instagram"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.3"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="#top">Home</a></li>
+            <li><a href="#services-grid">Services</a></li>
+            <li><a href="#fleet">Fleet</a></li>
+            <li><a href="#tracking-demo">Tracking</a></li>
+            <li><a href="#" onclick="event.preventDefault(); openSimpleModal('aboutModal'); return false;">About</a></li>
+            <li><a href="#" onclick="event.preventDefault(); openSimpleModal('contactModal'); return false;">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="#services-grid">Full Truck Load</a></li>
+            <li><a href="#services-grid">Part Load</a></li>
+            <li><a href="#services-grid">Express Delivery</a></li>
+            <li><a href="#services-grid">Warehousing</a></li>
+            <li><a href="#services-grid">Cold Chain Logistics</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-newsletter">
+          <h5>Stay in the loop</h5>
+          <p>Contact: <b style="color:#fff;">8054763374</b></p>
+          <form id="newsletterForm">
+            <label for="newsletterEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+            <input type="email" id="newsletterEmail" placeholder="you@example.com" required>
+            <button type="submit">Subscribe</button>
+          </form>
+          <p class="fn-note">Occasional freight network updates — unsubscribe any time.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="lsFooterYear">2026</span> Load Smart Pvt. Ltd. All rights reserved.</span>
+        <span>
+          <a href="#" onclick="event.preventDefault(); openComplaintModal(); return false;">Complaint</a>
+          &nbsp;·&nbsp; <a href="/admin/login">Admin</a>
+        </span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<!-- ================= AI LOGISTICS CHATBOT ================= -->
+<div class="ls-chat-launcher" id="lsChatLauncher" role="button" tabindex="0" aria-label="Open Logistics AI Assistant" aria-haspopup="dialog" aria-expanded="false">
+  <span class="ls-chat-launcher-pulse" aria-hidden="true"></span>
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 1 3.2 6.4L4 20l1.2-3.6A7.96 7.96 0 0 1 4 12z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><circle cx="9" cy="12" r="1.1" fill="#fff"/><circle cx="12.5" cy="12" r="1.1" fill="#fff"/><circle cx="16" cy="12" r="1.1" fill="#fff"/></svg>
+  <span class="ls-chat-badge" id="lsChatBadge">1</span>
+  <span class="ls-chat-tooltip">Need help?</span>
+</div>
+
+<div class="ls-chat-panel" id="lsChatPanel" role="dialog" aria-modal="false" aria-label="Logistics AI Assistant" data-open="false">
+  <div class="ls-chat-head">
+    <div class="ls-chat-head-info">
+      <span class="ls-chat-head-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 3.2 6.4L4 20l1.2-3.6A7.96 7.96 0 0 1 4 12z" stroke="#0c2c1c" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+      <div>
+        <div class="ls-chat-head-title">Logistics AI Assistant</div>
+        <div class="ls-chat-head-sub"><span class="dot"></span> Online • Typically replies instantly</div>
+      </div>
+    </div>
+    <button type="button" class="ls-chat-close" id="lsChatClose" aria-label="Close chat">&times;</button>
+  </div>
+
+  <div class="ls-chat-messages" id="lsChatMessages" aria-live="polite"></div>
+
+  <div class="ls-chat-quick" id="lsChatQuick"></div>
+
+  <form class="ls-chat-input-row" id="lsChatForm">
+    <label for="lsChatInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Message the Logistics AI Assistant</label>
+    <textarea id="lsChatInput" rows="1" placeholder="Ask about tracking, quotes, delivery…"></textarea>
+    <button type="submit" class="ls-chat-send" id="lsChatSend" aria-label="Send message">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l16-7-6 16-3-6-7-3z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+</div>
+
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<script src="/index.js"></script>
+<script src="/assets/site-enhance.js"></script>
+</body>
+</html>

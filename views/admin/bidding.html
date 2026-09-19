@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrier Bidding — Admin — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/admin-assets/bidding.css">
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <a class="logo" href="/admin/dashboard">
+      <img src="/assets/logo.jpeg" alt="Load Smart">
+      <span class="sub">Admin Portal</span>
+    </a>
+    <a class="back-link" href="/admin/dashboard">← Back to dashboard</a>
+  </header>
+
+  <div class="content">
+    <span class="eyebrow">Admin · Bidding</span>
+    <h1>Carrier Bidding</h1>
+    <p class="intro">Every load currently open for carrier bidding, or recently decided through bidding. Open a load to see every bid — carrier amount, LoadSmart margin and the final shipper price side by side.</p>
+
+    <div class="controls-row">
+      <div class="ls-search-box" style="max-width:420px; margin-bottom:0;">
+        <span class="ls-search-icon">🔍</span>
+        <input type="text" id="biddingSearchInput" class="ls-search-input" placeholder="Search by Token No., pickup, or destination…">
+      </div>
+      <button type="button" id="refreshBtn" class="refresh-btn">🔄 Refresh</button>
+      <span id="lastUpdatedNote" class="last-updated-note"></span>
+    </div>
+
+    <p class="count-line" id="countLine">Loading...</p>
+    <div id="contentWrap"></div>
+  </div>
+
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/admin-assets/bidding.js"></script>
+</body>
+</html>

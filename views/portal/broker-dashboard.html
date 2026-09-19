@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broker Dashboard — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notification-bell.css">
+<link rel="stylesheet" href="/portal-assets/broker-dashboard.css">
+</head>
+<body>
+
+<canvas id="lsNetworkCanvas" aria-hidden="true"></canvas>
+
+<header>
+  <a class="logo" href="/broker-dashboard">
+    <img src="/assets/logo.jpeg" alt="Load Smart">
+    <span class="sub">Broker Portal</span>
+  </a>
+  <div class="header-actions">
+    <span id="notifBellMount"></span>
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+    </button>
+    <button type="button" id="logoutBtn" class="logout-link">Log out</button>
+  </div>
+</header>
+
+<div class="content">
+  <span class="eyebrow">Broker Portal</span>
+  <h1 id="welcomeHeading">Welcome back</h1>
+  <p class="sub-line" id="kycBanner"></p>
+
+  <nav class="tabbar" id="tabbar" role="tablist">
+    <button type="button" class="tab-btn active" data-tab="overview" role="tab">📊 Overview</button>
+    <button type="button" class="tab-btn" data-tab="matching" role="tab">🧭 Load Matching</button>
+    <button type="button" class="tab-btn" data-tab="loads" role="tab">📦 Load Board</button>
+    <button type="button" class="tab-btn" data-tab="automation" role="tab">🤝 Carrier Connect</button>
+    <button type="button" class="tab-btn" data-tab="shipments" role="tab">🚚 My Shipments</button>
+    <button type="button" class="tab-btn" data-tab="bids" role="tab">🎯 My Bids</button>
+    <button type="button" class="tab-btn" data-tab="kyc" role="tab">🪪 KYC &amp; Documents</button>
+    <button type="button" class="tab-btn" data-tab="assistant" role="tab">🤖 AI Assistant</button>
+    <button type="button" class="tab-btn" data-tab="profile" role="tab">⚙️ Profile</button>
+  </nav>
+
+  <!-- ===================== LOAD MATCHING ===================== -->
+  <section class="tab-panel" id="panel-matching">
+    <div class="panel-card">
+      <h2>🧭 Match Loads to My Routes</h2>
+      <p class="hint">Ranked with a deterministic, rule-based algorithm against your saved route/truck-type preferences (see Profile) — this always works, even when the AI Assistant is unavailable.</p>
+      <div id="matchingLoadsError" class="banner error"></div>
+      <div id="matchingLoadsList"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+    </div>
+    <div class="panel-card">
+      <h2>🚛 Match Carriers to a Load</h2>
+      <p class="hint">Pick an open load to see carriers/trucks ranked by: Origin 25% · Destination 25% · Truck type 15% · Capacity 15% · Availability 10% · Verification 5% · Trust score 5%.</p>
+      <div class="filter-bar">
+        <select id="matchingLoadSelect"><option value="">Select an open load…</option></select>
+        <button type="button" class="btn-primary" id="matchingRunBtn">Find matching carriers</button>
+      </div>
+      <div id="matchingCarriersError" class="banner error"></div>
+      <div id="matchingCarriersList"></div>
+    </div>
+  </section>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <section class="tab-panel active" id="panel-overview">
+    <div class="cards-grid" id="cardsGrid">
+      <div class="empty-state"><span class="ls-spinner"></span> Loading your dashboard…</div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel-card">
+        <h2>🧭 Broker Opportunity Radar</h2>
+        <p class="hint">Available loads scored against your preferred routes, truck types and load categories — set your preferences in Profile to sharpen this list.</p>
+        <div id="opportunityList" class="opportunity-list"></div>
+      </div>
+      <div class="panel-card">
+        <h2>⚠️ Account Health</h2>
+        <p class="hint">Neutral, informational flags — never an accusation of wrongdoing.</p>
+        <div id="riskList" class="risk-list"></div>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <h2>🕒 Activity Timeline</h2>
+      <div id="timelineList" class="timeline-list"></div>
+    </div>
+  </section>
+
+  <!-- ===================== LOAD BOARD ===================== -->
+  <section class="tab-panel" id="panel-loads">
+    <div class="panel-card" id="myPostedLoadsCard">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <h2 style="margin:0;">📮 My Posted Loads</h2>
+        <button type="button" class="btn-primary" id="openPostLoadBtn">+ Post New Load</button>
+      </div>
+      <p class="hint">Loads you've posted yourself (often on behalf of an offline client). Posting a load never marks it as assigned by itself.</p>
+      <div id="myPostedLoadsError" class="banner error"></div>
+      <div id="myPostedLoadsList"><div class="empty-state"><span class="ls-spinner"></span> Loading your posted loads…</div></div>
+    </div>
+
+    <h2 style="font-family:'Baloo 2',sans-serif; color:var(--green-deep); margin:24px 0 10px;">🌐 Marketplace — Open Loads to Bid On</h2>
+    <div class="filter-bar">
+      <input type="text" id="filterOrigin" placeholder="Origin">
+      <input type="text" id="filterDestination" placeholder="Destination">
+      <input type="text" id="filterTruckType" placeholder="Truck type">
+      <input type="number" id="filterMinWeight" placeholder="Min weight (kg)">
+      <input type="number" id="filterMaxWeight" placeholder="Max weight (kg)">
+      <input type="date" id="filterFromDate">
+      <input type="date" id="filterToDate">
+      <button type="button" class="btn-primary" id="applyFiltersBtn">Filter</button>
+      <button type="button" class="btn-secondary" id="clearFiltersBtn">Clear</button>
+    </div>
+    <div id="loadsError" class="banner error"></div>
+    <div id="loadsList" class="loads-grid"><div class="empty-state"><span class="ls-spinner"></span> Loading available loads…</div></div>
+  </section>
+
+  <!-- Post / Edit New Load modal -->
+  <div class="ls-modal-overlay" id="postLoadModal" hidden>
+    <div class="ls-modal" style="max-width:720px;">
+      <button type="button" class="ls-modal-close" id="closePostLoadModal">✕</button>
+      <h2 id="postLoadModalTitle">Post a new load</h2>
+      <div id="postLoadError" class="banner error"></div>
+      <div class="field-grid">
+        <div class="field"><label>Pickup location *</label><input type="text" id="plPickup"></div>
+        <div class="field"><label>Destination *</label><input type="text" id="plDestination"></div>
+        <div class="field"><label>Pickup date *</label><input type="datetime-local" id="plPickupDateTime"></div>
+        <div class="field"><label>Delivery deadline</label><input type="datetime-local" id="plDeliveryDeadline"></div>
+        <div class="field"><label>Material / category *</label><input type="text" id="plMaterial"></div>
+        <div class="field"><label>Weight (kg) *</label><input type="number" id="plWeight" min="1"></div>
+        <div class="field"><label>Required truck type *</label><input type="text" id="plRequiredTruckType" placeholder="e.g. Open Body, Container"></div>
+        <div class="field"><label>Truck body type</label><input type="text" id="plRequiredBodyType"></div>
+        <div class="field"><label>Number of trucks</label><input type="number" id="plNumberOfTrucks" min="1" value="1"></div>
+        <div class="field"><label>Budget / expected freight rate (₹)</label><input type="number" id="plBudgetRate" min="0"></div>
+        <div class="field"><label>Contact person *</label><input type="text" id="plContactPerson"></div>
+        <div class="field"><label>Contact phone *</label><input type="text" id="plContactPhone"></div>
+        <div class="field"><label>Client / shipper name (optional)</label><input type="text" id="plShipperCompanyName"></div>
+      </div>
+      <div class="field" style="margin-top:10px;"><label>Loading instructions</label><textarea id="plLoadingInstructions" rows="2" maxlength="1000"></textarea></div>
+      <div class="field" style="margin-top:10px;"><label>Unloading instructions</label><textarea id="plUnloadingInstructions" rows="2" maxlength="1000"></textarea></div>
+      <div class="field" style="margin-top:10px;"><label>Special requirements</label><textarea id="plSpecialRequirements" rows="2" maxlength="1000"></textarea></div>
+      <div class="field" style="margin-top:10px;"><label>Documents required from carrier (comma-separated, optional)</label><input type="text" id="plRequiredDocuments" placeholder="e.g. Insurance copy, GST certificate"></div>
+      <div class="field-grid" style="margin-top:10px;">
+        <div class="field" style="flex-direction:row; align-items:center; gap:10px;">
+          <label style="margin:0;"><input type="checkbox" id="plAdvancePaymentRequired"> Advance payment required</label>
+        </div>
+        <div class="field"><label>Advance payment %</label><input type="number" id="plAdvancePaymentPercent" min="1" max="100"></div>
+      </div>
+      <button type="button" class="btn-primary" id="submitPostLoadBtn" style="margin-top:16px;">Save as draft</button>
+      <p class="hint" style="margin-top:8px;">Your load is saved as a private draft first. Open it for bidding from "My Posted Loads" whenever you're ready — carriers won't see it until then.</p>
+    </div>
+  </div>
+
+  <!-- Find Carrier results modal (Load Board "Find Carrier" action) -->
+  <div class="ls-modal-overlay" id="findCarrierModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeFindCarrierModal">✕</button>
+      <div id="findCarrierBody"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- View bids (read-only ranked offers) modal -->
+  <div class="ls-modal-overlay" id="viewBidsModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeViewBidsModal">✕</button>
+      <div id="viewBidsBody"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Load detail modal -->
+  <div class="ls-modal-overlay" id="loadDetailModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeLoadDetail">✕</button>
+      <div id="loadDetailBody"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+      <div id="bestCarrierMatchBox"></div>
+    </div>
+  </div>
+
+  <!-- Bid modal -->
+  <div class="ls-modal-overlay" id="bidModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeBidModal">✕</button>
+      <h2>Submit a bid</h2>
+      <div id="bidModalError" class="banner error"></div>
+      <div class="field">
+        <label>Eligible truck</label>
+        <select id="bidTruckSelect"></select>
+      </div>
+      <div class="field">
+        <label>Your bid amount (₹)</label>
+        <input type="number" id="bidAmountInput" min="1">
+      </div>
+      <div class="field">
+        <label>Notes (optional)</label>
+        <textarea id="bidNotesInput" maxlength="500" rows="3"></textarea>
+      </div>
+      <button type="button" class="btn-primary" id="submitBidBtn">Submit bid</button>
+    </div>
+  </div>
+
+  <!-- ===================== CARRIER CONNECT (Broker Automation) ===================== -->
+  <section class="tab-panel" id="panel-automation">
+    <div class="panel-card">
+      <h2>🔍 Find &amp; Connect with Carriers</h2>
+      <p class="hint">Search the platform's verified carriers and build your own network — connecting is independent of any specific load.</p>
+      <div class="filter-bar">
+        <input type="text" id="ccSearchInput" placeholder="Company, city, truck number…">
+        <input type="text" id="ccTruckTypeInput" placeholder="Truck type">
+        <input type="number" id="ccMinCapacityInput" placeholder="Min capacity (T)">
+        <input type="text" id="ccRouteInput" placeholder="Route / city">
+        <select id="ccMinTrustSelect">
+          <option value="">Any trust score</option>
+          <option value="90">90+</option>
+          <option value="75">75+</option>
+          <option value="60">60+</option>
+        </select>
+        <label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" id="ccAvailableOnly"> Available now</label>
+        <label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" id="ccIncludeUnverified"> Include unverified</label>
+        <button type="button" class="btn-primary" id="ccSearchBtn">Search</button>
+      </div>
+      <div id="ccSearchError" class="banner error"></div>
+      <div id="ccCarrierCards" class="loads-grid"><div class="empty-state"><span class="ls-spinner"></span> Loading carriers…</div></div>
+    </div>
+
+    <div class="panel-card">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <h2 style="margin:0;">📇 My Connected Carriers</h2>
+        <button type="button" class="btn-secondary" id="refreshMyConnectionsBtn">Refresh</button>
+      </div>
+      <p class="hint">Every connection request you've sent, and its live status. Carriers accept, reject, or you can cancel a still-pending request.</p>
+      <div id="ccConnectionsError" class="banner error"></div>
+      <div id="ccConnectionsList"><div class="empty-state">No connection requests yet.</div></div>
+    </div>
+
+    <div class="panel-card workflow-card">
+      <h2>🔗 Advanced: Per-Carrier Load Workflow</h2>
+      <p class="hint">An automated hand-off from freight discovery to a real Shipper connection request — every step still runs through the same approval rules as the rest of LoadSmart. Nothing here auto-accepts a load, assigns a truck, or confirms a shipment.</p>
+      <div class="workflow-steps">
+        <span>1. Select Carrier</span>
+        <span>2. Find Suitable Loads</span>
+        <span>3. Save Load</span>
+        <span>4. Find Suitable Truck</span>
+        <span>5. Select Truck</span>
+        <span>6. Request Shipper Connection</span>
+        <span>7. Notifications Sent</span>
+        <span>8. Negotiate / Bid</span>
+        <span>9. Shipper Approval</span>
+        <span>10. Assignment</span>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <h2>🚛 Select a Carrier</h2>
+      <p class="hint">Search any verified carrier on the platform to act on their behalf.</p>
+      <div class="filter-bar">
+        <input type="text" id="carrierSearchInput" placeholder="Search by company or username">
+        <button type="button" class="btn-secondary" id="carrierSearchBtn">Search</button>
+      </div>
+      <div id="carrierSearchError" class="banner error"></div>
+      <div id="carrierResultsList" class="carrier-results"></div>
+      <div id="selectedCarrierBanner" class="banner success" style="display:none;"></div>
+    </div>
+
+    <div class="panel-card" id="recommendedLoadsCard" style="display:none;">
+      <h2>🎯 Recommended Loads for this Carrier</h2>
+      <p class="hint">Open loads scored against this carrier's own fleet, using the same matching engine as the rest of LoadSmart.</p>
+      <div id="recommendedLoadsList"><div class="empty-state">No recommendations yet.</div></div>
+    </div>
+
+    <div class="panel-card">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <h2 style="margin:0;">📌 Saved Loads</h2>
+        <button type="button" class="btn-secondary" id="refreshSavedLoadsBtn">Refresh</button>
+      </div>
+      <p class="hint">Loads you've shortlisted for a carrier. Saving never changes the load's real status.</p>
+      <div id="savedLoadsError" class="banner error"></div>
+      <div id="savedLoadsList"><div class="empty-state">No saved loads yet — select a carrier above and save a recommended load.</div></div>
+    </div>
+
+    <div class="panel-card">
+      <h2>📋 Pending Connections &amp; Active Negotiations</h2>
+      <p class="hint">Every "Request Shipper Connection" you've made, and its live status.</p>
+      <div id="connectionsError" class="banner error"></div>
+      <div id="activeConnectionsList"><div class="empty-state">No active connection requests yet.</div></div>
+      <h2 style="font-size:16px; margin-top:20px;">History</h2>
+      <div id="pastConnectionsList"><div class="empty-state">Nothing here yet.</div></div>
+    </div>
+
+    <div class="panel-card">
+      <h2>🔔 Recent Automation Notifications</h2>
+      <p class="hint">Full notification center is in the bell icon above — this is a quick view of your latest activity.</p>
+      <div id="automationNotifList"><div class="empty-state">No notifications yet.</div></div>
+    </div>
+  </section>
+
+  <!-- Truck match results modal -->
+  <div class="ls-modal-overlay" id="truckMatchModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeTruckMatchModal">✕</button>
+      <div id="truckMatchBody"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Connection offer (bid) modal -->
+  <div class="ls-modal-overlay" id="connectionBidModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeConnectionBidModal">✕</button>
+      <h2>Place an offer</h2>
+      <p class="hint" id="connectionBidContext"></p>
+      <div id="connectionBidError" class="banner error"></div>
+      <div class="field">
+        <label>Offer amount (₹)</label>
+        <input type="number" id="connectionBidAmount" min="1">
+      </div>
+      <div class="field">
+        <label>Notes (optional)</label>
+        <textarea id="connectionBidNotes" maxlength="500" rows="3"></textarea>
+      </div>
+      <button type="button" class="btn-primary" id="submitConnectionBidBtn">Submit offer</button>
+    </div>
+  </div>
+
+  <!-- Carrier profile modal (Carrier Connect "View profile") -->
+  <div class="ls-modal-overlay" id="carrierProfileModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeCarrierProfileModal">✕</button>
+      <div id="carrierProfileBody"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Invite carrier to a specific load -->
+  <div class="ls-modal-overlay" id="inviteCarrierModal" hidden>
+    <div class="ls-modal">
+      <button type="button" class="ls-modal-close" id="closeInviteCarrierModal">✕</button>
+      <h2>Invite to bid on a load</h2>
+      <div id="inviteCarrierError" class="banner error"></div>
+      <div class="field">
+        <label>Select your open load</label>
+        <select id="inviteCarrierLoadSelect"></select>
+      </div>
+      <button type="button" class="btn-primary" id="submitInviteCarrierBtn" style="margin-top:12px;">Send invitation</button>
+    </div>
+  </div>
+
+  <!-- ===================== MY BIDS ===================== -->
+  <section class="tab-panel" id="panel-bids">
+    <div class="filter-bar">
+      <select id="bidStatusFilter">
+        <option value="">All statuses</option>
+        <option value="SUBMITTED">Submitted</option>
+        <option value="SHORTLISTED">Shortlisted</option>
+        <option value="ACCEPTED">Accepted</option>
+        <option value="REJECTED">Rejected</option>
+        <option value="WITHDRAWN">Withdrawn</option>
+        <option value="EXPIRED">Expired</option>
+      </select>
+      <button type="button" class="btn-secondary" id="refreshBidsBtn">Refresh</button>
+    </div>
+    <div id="bidsError" class="banner error"></div>
+    <div id="bidsList" class="bids-list"><div class="empty-state"><span class="ls-spinner"></span> Loading your bids…</div></div>
+  </section>
+
+  <!-- ===================== MY SHIPMENTS ===================== -->
+  <section class="tab-panel" id="panel-shipments">
+    <div class="filter-bar">
+      <select id="shipmentsFilterSelect">
+        <option value="">All shipments</option>
+        <option value="active">Active</option>
+        <option value="awaiting_carrier">Awaiting carrier</option>
+        <option value="awaiting_payment">Awaiting payment</option>
+        <option value="dispatched">Dispatched</option>
+        <option value="in_transit">In transit</option>
+        <option value="delivered">Delivered</option>
+        <option value="pod_pending">POD pending</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <button type="button" class="btn-secondary" id="refreshShipmentsBtn">Refresh</button>
+    </div>
+    <div id="shipmentsError" class="banner error"></div>
+    <div id="shipmentsList" class="shipments-list"><div class="empty-state"><span class="ls-spinner"></span> Loading your shipments…</div></div>
+  </section>
+
+  <!-- ===================== KYC & DOCUMENTS ===================== -->
+  <section class="tab-panel" id="panel-kyc">
+    <div class="panel-card">
+      <h2>KYC status</h2>
+      <div id="kycStatusBlock"><div class="empty-state"><span class="ls-spinner"></span> Loading…</div></div>
+    </div>
+    <div class="panel-card" id="kycDocsCard">
+      <h2>Documents</h2>
+      <div id="kycDocsList" class="kyc-docs-grid"></div>
+      <button type="button" class="btn-primary" id="submitKycBtn" style="margin-top:16px;">Submit KYC for review</button>
+    </div>
+  </section>
+
+  <!-- ===================== AI ASSISTANT ===================== -->
+  <section class="tab-panel" id="panel-assistant">
+    <div class="panel-card ai-panel">
+      <h2>🤖 AI Broker Operations Assistant</h2>
+      <p class="hint">Ask about your loads, bids, documents or account status. The assistant only ever sees your own data, and can never take actions on your behalf — it explains and recommends only.</p>
+      <div id="aiUnavailableBanner" class="banner" style="display:none; background:rgba(216,167,45,0.15); color:#8a6d1f; border:1px solid rgba(216,167,45,0.4);"></div>
+      <div id="aiChatLog" class="ai-chat-log"></div>
+      <div class="ai-chat-input-row">
+        <input type="text" id="aiChatInput" placeholder="e.g. Which loads match my preferred routes?" maxlength="1000">
+        <button type="button" class="btn-primary" id="aiChatSendBtn">Ask</button>
+      </div>
+      <div class="ai-suggestions" id="aiSuggestions">
+        <button type="button" class="suggestion-chip">Which loads match my routes?</button>
+        <button type="button" class="suggestion-chip">What documents are missing?</button>
+        <button type="button" class="suggestion-chip">Why is my account pending?</button>
+        <button type="button" class="suggestion-chip">Which bids are active?</button>
+        <button type="button" class="suggestion-chip">What should I do next?</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROFILE ===================== -->
+  <section class="tab-panel" id="panel-profile">
+    <div class="panel-card">
+      <h2>Your details</h2>
+      <div id="profileError" class="banner error"></div>
+      <div id="profileSuccess" class="banner success"></div>
+      <div class="field-grid">
+        <div class="field"><label>Full name / contact person</label><input type="text" id="profContactPerson"></div>
+        <div class="field"><label>Company / agency name</label><input type="text" id="profCompanyName"></div>
+        <div class="field"><label>Mobile number</label><input type="text" id="profMobile"></div>
+        <div class="field"><label>Address line</label><input type="text" id="profAddressLine"></div>
+        <div class="field"><label>City</label><input type="text" id="profCity"></div>
+        <div class="field"><label>State</label><input type="text" id="profState"></div>
+        <div class="field"><label>Pincode</label><input type="text" id="profPincode"></div>
+      </div>
+      <button type="button" class="btn-primary" id="saveProfileBtn">Save changes</button>
+    </div>
+
+    <div class="panel-card">
+      <h2>Load preferences <span class="optional-tag">Powers your Opportunity Radar</span></h2>
+      <div class="field-grid">
+        <div class="field"><label>Preferred origins (comma-separated)</label><input type="text" id="prefOrigins"></div>
+        <div class="field"><label>Preferred destinations (comma-separated)</label><input type="text" id="prefDestinations"></div>
+        <div class="field"><label>Preferred truck types (comma-separated)</label><input type="text" id="prefTruckTypes"></div>
+        <div class="field"><label>Preferred load categories (comma-separated)</label><input type="text" id="prefLoadCategories"></div>
+      </div>
+      <button type="button" class="btn-primary" id="savePrefsBtn">Save preferences</button>
+    </div>
+  </section>
+</div>
+
+<div class="ls-toast" id="lsToast"></div>
+
+<script src="/assets/notification-bell.js"></script>
+<script src="/portal-assets/broker-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — Load Smart</title>
+<link rel="stylesheet" href="/assets/register.css">
+<link rel="stylesheet" href="/admin-assets/login.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Pvt. Ltd.</span>
+      </a>
+      <a class="back-link" href="/">← Back to home</a>
+    </header>
+
+    <div class="admin-shell">
+      <span class="form-eyebrow">Admin Portal</span>
+      <h1>Sign in to Admin</h1>
+      <p class="intro">Restricted access. Enter your admin ID and password to manage shippers, brokers and carriers.</p>
+
+      <div id="errorBanner" class="error-banner" style="display:none;"></div>
+
+      <form method="POST" action="/admin/login" id="adminLoginForm">
+        <div class="field" style="margin-bottom:16px;">
+          <label for="adminId">Admin ID</label>
+          <input type="text" id="adminId" name="adminId" required autocomplete="username">
+        </div>
+        <div class="field" style="margin-bottom:26px;">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="submit-btn">Sign in</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script src="/admin-assets/login.js"></script>
+<script src="/assets/password-toggle.js"></script>
+</body>
+</html>

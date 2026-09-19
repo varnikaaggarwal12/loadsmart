@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Load Smart — shared Search UI
+   Used by: shipper Booking Status, shipper Live Tracking, admin Shipper/
+   Carrier/Broker lists, admin Tracking module, admin Rate Requests.
+   Keeps the magnifying-glass search box, "Searching…" indicator, empty
+   "no results" state, copy-to-clipboard button and loading spinner
+   looking identical everywhere they're used.
+   ========================================================================== */
+
+.ls-search-box{
+  position: relative;
+  flex: 1;
+  min-width: 160px;
+}
+.ls-search-box .ls-search-icon{
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.ls-search-box input.ls-search-input{
+  width: 100%;
+  padding: 10px 12px 10px 32px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(23,37,29,0.14);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  background: #fff;
+  color: inherit;
+  outline: none;
+}
+.ls-search-box input.ls-search-input:focus{
+  border-color: #12492e;
+  box-shadow: 0 0 0 3px rgba(154,223,143,0.3);
+}
+
+/* "🔍 Searching…" indicator — only shown while a real network request is
+   in flight. Local/instant filters never show this (no artificial delay). */
+.ls-search-status{
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #5c6a61;
+  margin-top: 6px;
+}
+.ls-search-status.show{ display: inline-flex; }
+
+/* Small spinner — reused by the search status line and the pincode
+   look-up indicator. */
+.ls-spinner{
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(23,37,29,0.18);
+  border-top-color: #12492e;
+  display: inline-block;
+  animation: ls-spin 0.7s linear infinite;
+}
+@keyframes ls-spin{ to{ transform: rotate(360deg); } }
+
+/* "No results found" empty state for a search with zero matches. */
+.ls-no-results{
+  text-align: center;
+  padding: 40px 20px;
+  color: #7a867e;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 14px;
+}
+
+/* Small "Copy" button placed next to any auto-generated value (Token No.,
+   Reference ID, Username) so the user can copy it in one tap. */
+.ls-copy-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid rgba(23,37,29,0.16);
+  background: #f3f1e9;
+  color: #17251d;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+.ls-copy-btn:hover{ background: #e9e6dc; }
+.ls-copy-btn.copied{
+  background: rgba(154,223,143,0.35);
+  border-color: rgba(14,58,36,0.3);
+  color: #0e3a24;
+}
+
+body.dark-mode .ls-search-box input.ls-search-input{
+  background: #232427;
+  color: #f2f3f1;
+  border-color: rgba(242,243,241,0.16);
+}
+body.dark-mode .ls-search-status{ color: #b7bcb9; }
+body.dark-mode .ls-no-results{ background: #232427; color: #b7bcb9; }
+body.dark-mode .ls-copy-btn{ background: #2c2d30; color: #f2f3f1; border-color: rgba(242,243,241,0.16); }
+body.dark-mode .ls-copy-btn.copied{ background: rgba(154,223,143,0.22); color: #9adf8f; }
+body.dark-mode .ls-spinner{ border-color: rgba(242,243,241,0.2); border-top-color: #9adf8f; }

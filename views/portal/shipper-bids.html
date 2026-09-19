@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bids — Shipper — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/portal-assets/shipper-bids.css">
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/portal/shipper">
+    <img src="/assets/logo.jpeg" alt="Load Smart">
+    <span class="sub">Shipper Portal</span>
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+    </button>
+    <a class="back-link" href="/portal/shipper">← Back to My Account</a>
+  </div>
+</header>
+
+<div class="content">
+  <span class="eyebrow">Shipper Portal · Bidding</span>
+  <h1>My Bids</h1>
+  <p class="sub-line">Every load you posted for Carrier Bidding — compare the offers as they come in and pick the one you want.</p>
+
+  <div id="errorBanner" class="banner error"></div>
+
+  <div id="loadListWrap">
+    <div class="empty-state"><span class="ls-spinner"></span> Loading your loads…</div>
+  </div>
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/portal-assets/shipper-bids.js"></script>
+</body>
+</html>

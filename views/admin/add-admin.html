@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Admin — Load Smart</title>
+<link rel="stylesheet" href="/assets/register.css">
+<link rel="stylesheet" href="/admin-assets/add-admin.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/admin/dashboard">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Admin Portal</span>
+      </a>
+      <a class="back-link" href="/admin/dashboard">← Back to dashboard</a>
+    </header>
+
+    <div class="admin-shell">
+      <span class="form-eyebrow">Admin Management</span>
+      <h1>Add a new admin</h1>
+      <p class="intro">Create login credentials for another admin. They'll be able to sign in at the same Admin Portal with the ID and password you set here.</p>
+
+      <div id="errorBanner" class="error-banner" style="display:none;"></div>
+      <div id="successBanner" style="display:none; margin-bottom:16px; padding:12px 16px; border-radius:10px; background:rgba(154,223,143,0.28); color:#0e3a24; font-weight:600; font-size:13.5px;"></div>
+
+      <form method="POST" action="/admin/add-admin" id="addAdminForm">
+        <div class="field" style="margin-bottom:16px;">
+          <label for="newAdminId">New admin ID</label>
+          <input type="text" id="newAdminId" name="newAdminId" required placeholder="e.g. ops_manager1">
+        </div>
+        <div class="field" style="margin-bottom:26px;">
+          <label for="newAdminPassword">Password</label>
+          <input type="password" id="newAdminPassword" name="newAdminPassword" required minlength="6">
+        </div>
+        <button type="submit" class="submit-btn">Create admin</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script src="/admin-assets/add-admin.js"></script>
+<script src="/assets/password-toggle.js"></script>
+</body>
+</html>

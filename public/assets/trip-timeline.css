@@ -1,0 +1,63 @@
+/* trip-timeline.css — shared styling for public/assets/trip-timeline.js
+   (LSTripTimeline). Included once per page alongside the script, on every
+   page that renders a trip timeline: driver dashboard, shipper Live
+   Tracking, carrier Loads, Admin Tracking. Uses this project's existing
+   color variables (--green-deep/--leaf/--orange/--line) — each page
+   already defines these in its own :root, so no new palette is
+   introduced. */
+
+.ls-tt-ladder { list-style: none; margin: 10px 0 0; padding: 0; }
+.ls-tt-step { position: relative; display: flex; gap: 12px; padding: 0 0 18px 0; }
+.ls-tt-step:last-child { padding-bottom: 0; }
+.ls-tt-step::before {
+  content: ''; position: absolute; left: 10px; top: 24px; bottom: -2px; width: 2px;
+  background: var(--line, rgba(23,37,29,0.12));
+}
+.ls-tt-step:last-child::before { display: none; }
+.ls-tt-step.done::before { background: var(--leaf, #9adf8f); }
+
+.ls-tt-dot {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+  z-index: 1; margin-top: 1px;
+}
+.ls-tt-step.done .ls-tt-dot { background: var(--leaf, #9adf8f); color: var(--green-deep, #0e3a24); }
+.ls-tt-step.current .ls-tt-dot {
+  background: var(--orange, #e8722c); color: #fff;
+  box-shadow: 0 0 0 4px rgba(232,114,44,0.22); animation: lsTtPulse 1.6s infinite;
+}
+.ls-tt-step.future .ls-tt-dot { background: #fff; color: #b5bdb7; border: 2px solid var(--line, rgba(23,37,29,0.12)); }
+@keyframes lsTtPulse { 0%,100%{ box-shadow: 0 0 0 4px rgba(232,114,44,0.22);} 50%{ box-shadow: 0 0 0 8px rgba(232,114,44,0.08);} }
+
+.ls-tt-body { flex: 1; min-width: 0; }
+.ls-tt-label { font-size: 13.5px; font-weight: 700; }
+.ls-tt-step.future .ls-tt-label { color: #9aa39b; font-weight: 600; }
+.ls-tt-step.current .ls-tt-label { color: var(--orange, #e8722c); }
+
+.ls-tt-detail { margin-top: 4px; font-size: 12px; color: #5c6a61; }
+.ls-tt-detail-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.ls-tt-when { font-weight: 600; }
+.ls-tt-who::before { content: '· '; }
+.ls-tt-loc { margin-top: 2px; }
+.ls-tt-notes { margin-top: 2px; font-style: italic; color: #3d4a41; }
+.ls-tt-doc-link { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 700; color: var(--green-deep, #0e3a24); text-decoration: none; }
+.ls-tt-doc-link:hover { text-decoration: underline; }
+.ls-tt-pending { color: #b5793a; font-style: italic; }
+
+.ls-tt-activity-heading {
+  font-family: 'Baloo 2', sans-serif; font-size: 14px; margin: 18px 0 8px;
+  padding-top: 14px; border-top: 1px solid var(--line, rgba(23,37,29,0.12));
+}
+.ls-tt-activity-list { list-style: none; margin: 0; padding: 0; }
+.ls-tt-activity-item { padding: 8px 0; border-bottom: 1px solid var(--line, rgba(23,37,29,0.08)); }
+.ls-tt-activity-item:last-child { border-bottom: none; }
+.ls-tt-activity-label { font-size: 12.5px; font-weight: 700; }
+
+body.dark-mode .ls-tt-step.future .ls-tt-dot { background: #2a2b2e; border-color: rgba(242,243,241,0.14); color: #6f766f; }
+body.dark-mode .ls-tt-detail,
+body.dark-mode .ls-tt-who,
+body.dark-mode .ls-tt-loc { color: #b7bcb9; }
+body.dark-mode .ls-tt-notes { color: #d5d8d3; }
+body.dark-mode .ls-tt-step.future .ls-tt-label { color: #7d857e; }
+body.dark-mode .ls-tt-activity-heading,
+body.dark-mode .ls-tt-activity-item { border-color: rgba(242,243,241,0.12); }

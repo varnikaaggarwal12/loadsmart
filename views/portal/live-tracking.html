@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<script src="/assets/notification-bell.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Tracking — Shipper — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/assets/leaflet/leaflet.css">
+<link rel="stylesheet" href="/assets/trip-timeline.css">
+<link rel="stylesheet" href="/portal-assets/live-tracking.css">
+<link rel="stylesheet" href="/assets/notification-bell.css">
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/portal/shipper">
+    <img src="/assets/logo.jpeg" alt="Load Smart">
+    <span class="sub">Shipper Portal</span>
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span id="notifBellMount"></span>
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+    </button>
+    <a class="back-link" href="/portal/shipper">← Back to My Account</a>
+  </div>
+</header>
+
+<div class="content">
+  <span class="eyebrow">Shipper Portal · Live Tracking</span>
+  <h1>Live Tracking Dashboard</h1>
+  <p class="sub-line">Search by Token/Order No. or by route, then select an order to see live truck location and progress.</p>
+
+  <div class="search-bar">
+    <div class="search-field">
+      <label>Token / Order No.</label>
+      <div class="ls-search-box">
+        <span class="ls-search-icon">🔍</span>
+        <input type="text" id="searchToken" class="ls-search-input" placeholder="e.g. LS4820193765">
+      </div>
+    </div>
+    <div class="search-field">
+      <label>From city</label>
+      <div class="ls-search-box">
+        <span class="ls-search-icon">🔍</span>
+        <input type="text" id="searchFrom" class="ls-search-input" placeholder="Origin city">
+      </div>
+    </div>
+    <div class="search-field">
+      <label>To city</label>
+      <div class="ls-search-box">
+        <span class="ls-search-icon">🔍</span>
+        <input type="text" id="searchTo" class="ls-search-input" placeholder="Destination city">
+      </div>
+    </div>
+    <div class="search-actions">
+      <button class="btn btn-primary" id="searchBtn">Search</button>
+      <button class="btn btn-ghost" id="clearBtn">Clear</button>
+    </div>
+  </div>
+  <div class="ls-search-status" id="searchStatus"><span class="ls-spinner"></span> Searching…</div>
+
+  <div class="tracking-layout">
+    <div id="orderListWrap">
+      <div class="empty-state"><span class="ls-spinner"></span> Loading your active bookings…</div>
+    </div>
+    <div class="detail-panel" id="detailPanel">
+      <div class="empty-state" style="box-shadow:none;">Select an order from the list to view live tracking details.</div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/assets/leaflet/leaflet.js"></script>
+<script src="/assets/live-map.js"></script>
+<script src="/assets/trip-timeline.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/portal-assets/live-tracking.js"></script>
+</body>
+</html>

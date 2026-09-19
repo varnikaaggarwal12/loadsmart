@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<script src="/assets/notification-bell.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Notifications — Load Smart Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin-assets/dashboard.css">
+<link rel="stylesheet" href="/assets/notification-bell.css">
+<link rel="stylesheet" href="/admin-assets/email-notifications.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="/assets/logo.jpeg" alt="Load Smart">
+      <span class="sub">Admin Portal</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span id="notifBellMount"></span>
+      <button type="button" id="logoutBtn" class="logout-link">Log out</button>
+    </div>
+  </header>
+
+  <main class="email-log-main">
+    <a href="/admin/dashboard" class="back-link">&larr; Dashboard</a>
+    <span class="eyebrow">Notification System</span>
+    <h1>Email Notifications</h1>
+    <p>Every email the platform has attempted to send — who it went to, why, and whether it actually delivered.</p>
+
+    <div id="summaryChips" class="summary-chips"></div>
+
+    <div class="filters">
+      <select id="filterStatus">
+        <option value="">All statuses</option>
+        <option value="SENT">Sent</option>
+        <option value="FAILED">Failed</option>
+        <option value="PENDING">Pending</option>
+        <option value="PROCESSING">Processing</option>
+        <option value="RETRYING">Retrying</option>
+      </select>
+      <select id="filterEvent">
+        <option value="">All event types</option>
+      </select>
+      <input id="filterEmail" type="text" placeholder="Search recipient email…">
+      <input id="filterFrom" type="date">
+      <input id="filterTo" type="date">
+      <button id="applyFiltersBtn" class="btn-primary">Apply</button>
+      <button id="clearFiltersBtn" class="btn-ghost">Clear</button>
+    </div>
+
+    <div class="table-wrap">
+      <table id="logTable">
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>Event</th>
+            <th>Entity</th>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Sent / Updated</th>
+            <th>Failure Reason</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="logTableBody">
+          <tr><td colspan="8" class="empty-row">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+<script src="/admin-assets/email-notifications.js"></script>
+</body>
+</html>

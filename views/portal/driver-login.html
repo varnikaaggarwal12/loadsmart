@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver Login — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/portal-assets/driver.css">
+</head>
+<body class="driver-login-body">
+
+<div class="driver-login-card">
+  <img src="/assets/logo.jpeg" alt="Load Smart" class="driver-logo">
+  <h1>Driver Login</h1>
+  <p class="sub-line">Enter your registered mobile number to receive a one-time code.</p>
+
+  <div id="stepMobile">
+    <label>Mobile number</label>
+    <input type="tel" id="mobileInput" placeholder="10-digit mobile number" inputmode="numeric" maxlength="15">
+    <button type="button" class="driver-btn" id="sendOtpBtn">Send OTP</button>
+    <p class="driver-error" id="mobileError"></p>
+  </div>
+
+  <div id="stepOtp" style="display:none;">
+    <label>Enter OTP sent to <b id="otpMobileDisplay"></b></label>
+    <input type="text" id="otpInput" placeholder="6-digit OTP" inputmode="numeric" maxlength="6">
+    <button type="button" class="driver-btn" id="verifyOtpBtn">Verify &amp; Login</button>
+    <button type="button" class="driver-link-btn" id="resendOtpBtn">Resend OTP</button>
+    <p class="driver-note" id="otpCountdown"></p>
+    <p class="driver-error" id="otpError"></p>
+  </div>
+</div>
+
+<script src="/portal-assets/driver-login.js"></script>
+</body>
+</html>

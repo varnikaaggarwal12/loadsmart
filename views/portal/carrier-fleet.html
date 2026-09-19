@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleet — Carrier — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/portal-assets/carrier-loads.css">
+<link rel="stylesheet" href="/portal-assets/carrier-fleet.css">
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/portal/carrier">
+    <img src="/assets/logo.jpeg" alt="Load Smart">
+    <span class="sub">Carrier Portal</span>
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+    </button>
+    <a class="back-link" href="/portal/carrier">← Back to My Account</a>
+  </div>
+</header>
+
+<div class="content">
+  <span class="eyebrow">Carrier Portal · Fleet</span>
+  <h1>Trucks &amp; Drivers</h1>
+  <p class="sub-line">Onboard your trucks and drivers here — once both are verified by Admin and linked together, they become eligible for automatic load matching.</p>
+
+  <div id="errorBanner" class="banner error"></div>
+
+  <div class="fleet-tabs" id="fleetTabs">
+    <button class="fleet-tab-btn active" data-tab="trucks">🚚 Trucks</button>
+    <button class="fleet-tab-btn" data-tab="drivers">🧑‍✈️ Drivers</button>
+  </div>
+
+  <!-- ---------- Trucks tab ---------- -->
+  <div id="trucksPanel">
+    <button type="button" class="fleet-add-btn" id="showAddTruckBtn">+ Add a truck</button>
+
+    <div class="fleet-form-card" id="addTruckForm" style="display:none;">
+      <h3>Add a truck</h3>
+      <div class="fleet-form-grid">
+        <div class="field">
+          <label>Vehicle number *</label>
+          <input type="text" id="truckVehicleNumber" placeholder="DL01AB1234">
+        </div>
+        <div class="field">
+          <label>Truck type *</label>
+          <select id="truckTypeSelect">
+            <option value="Open Truck">Open Truck</option>
+            <option value="Closed Truck">Closed Truck</option>
+            <option value="Container">Container</option>
+            <option value="Trailer">Trailer</option>
+            <option value="Flatbed">Flatbed</option>
+            <option value="Mini Truck">Mini Truck</option>
+            <option value="Pickup">Pickup</option>
+            <option value="__other__">Other (type below)</option>
+          </select>
+          <input type="text" id="truckTypeOther" placeholder="Enter truck type" style="display:none; margin-top:8px;">
+        </div>
+        <div class="field">
+          <label>Capacity (tons) *</label>
+          <input type="number" id="truckCapacity" min="0" step="0.1" placeholder="e.g. 15">
+        </div>
+        <div class="field">
+          <label>Body type</label>
+          <input type="text" id="truckBodyType" placeholder="e.g. High-side, Curtain-side">
+        </div>
+        <div class="field">
+          <label>Current location</label>
+          <input type="text" id="truckLocation" placeholder="City / place name">
+        </div>
+        <div class="field">
+          <label>Vehicle document (RC / insurance)</label>
+          <input type="file" id="truckDocInput" accept="image/png,image/jpeg,application/pdf">
+          <span class="hint" id="truckDocHint"></span>
+          <input type="hidden" id="truckDocPath">
+        </div>
+      </div>
+      <div class="fleet-form-actions">
+        <button type="button" class="fleet-save-btn" id="saveTruckBtn">Add truck</button>
+        <button type="button" class="fleet-cancel-btn" id="cancelTruckBtn">Cancel</button>
+      </div>
+      <p class="fleet-form-error" id="truckFormError"></p>
+    </div>
+
+    <div id="trucksListWrap">
+      <div class="empty-state"><span class="ls-spinner"></span> Loading your trucks…</div>
+    </div>
+  </div>
+
+  <!-- ---------- Drivers tab ---------- -->
+  <div id="driversPanel" style="display:none;">
+    <button type="button" class="fleet-add-btn" id="showAddDriverBtn">+ Add a driver</button>
+
+    <div class="fleet-form-card" id="addDriverForm" style="display:none;">
+      <h3>Add a driver</h3>
+      <div class="fleet-form-grid">
+        <div class="field">
+          <label>Full name *</label>
+          <input type="text" id="driverName">
+        </div>
+        <div class="field">
+          <label>Mobile number *</label>
+          <input type="tel" id="driverMobile" placeholder="10-digit mobile number">
+          <span class="hint">This is what the driver uses to log in to their own dashboard (mobile + OTP) — no password needed.</span>
+        </div>
+        <div class="field">
+          <label>Driving licence number *</label>
+          <input type="text" id="driverLicense">
+        </div>
+        <div class="field">
+          <label>Licence expiry *</label>
+          <input type="date" id="driverLicenseExpiry">
+        </div>
+      </div>
+      <div class="fleet-form-actions">
+        <button type="button" class="fleet-save-btn" id="saveDriverBtn">Add driver</button>
+        <button type="button" class="fleet-cancel-btn" id="cancelDriverBtn">Cancel</button>
+      </div>
+      <p class="fleet-form-error" id="driverFormError"></p>
+    </div>
+
+    <div id="driversListWrap">
+      <div class="empty-state"><span class="ls-spinner"></span> Loading your drivers…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- Assign driver to truck modal ---------- -->
+<div class="fleet-modal-overlay" id="assignModalOverlay">
+  <div class="fleet-modal-box">
+    <button type="button" class="fleet-modal-close" id="assignModalCloseBtn">✕</button>
+    <h3>Assign a driver</h3>
+    <p class="sub-line" id="assignModalTruckLabel"></p>
+    <select id="assignDriverSelect" class="fleet-modal-select"></select>
+    <p class="fleet-form-error" id="assignModalError"></p>
+    <button type="button" class="fleet-save-btn" id="assignModalConfirmBtn" style="width:100%; margin-top:14px;">Assign</button>
+  </div>
+</div>
+
+<script src="/portal-assets/carrier-fleet.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleet — Admin — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/admin-assets/fleet.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/admin/dashboard">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Admin Portal</span>
+      </a>
+      <a class="back-link" href="/admin/dashboard">← Back to dashboard</a>
+    </header>
+
+    <div class="content">
+      <span class="eyebrow">🤖 Admin · AI Matching</span>
+      <h1>Trucks, Drivers &amp; Matching</h1>
+      <p class="intro">LoadSmart AI finds the best truck and driver for every load automatically. Your only manual decision is approving or rejecting its recommendation below — verification and fleet upkeep live in the other tabs.</p>
+
+      <div class="fleet-tabs" id="fleetTabs">
+        <button class="fleet-tab-btn active" data-tab="approvals">Approvals <span class="tab-count" id="approvalsCount"></span></button>
+        <button class="fleet-tab-btn" data-tab="unmatched">Unmatched Loads</button>
+        <button class="fleet-tab-btn" data-tab="trucks">Trucks</button>
+        <button class="fleet-tab-btn" data-tab="drivers">Drivers</button>
+      </div>
+
+      <div id="approvalsPanel"><div class="empty-state"><span class="ls-spinner"></span> Loading AI recommendations…</div></div>
+      <div id="unmatchedPanel" style="display:none;"><div class="empty-state"><span class="ls-spinner"></span> Loading loads…</div></div>
+      <div id="trucksPanel" style="display:none;"><div class="empty-state"><span class="ls-spinner"></span> Loading trucks…</div></div>
+      <div id="driversPanel" style="display:none;"><div class="empty-state"><span class="ls-spinner"></span> Loading drivers…</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= Matching Dashboard modal ================= -->
+<!-- Best Match + Other Suitable Matches + Ineligible candidates for one
+     load — opened from "View AI Matching Details" (Approvals) or "Find
+     Matches" (Unmatched Loads). Assign is available directly from here. -->
+<div class="modal-overlay" id="matchModal">
+  <div class="modal-box match-modal-box">
+    <div class="match-modal-head">
+      <div>
+        <h3 id="matchModalTitle">Matching Dashboard</h3>
+        <p id="matchModalSub">Ranked by the Smart Matching engine — weighted, deterministic, never AI-guessed.</p>
+      </div>
+      <button type="button" class="modal-x" id="matchModalClose" aria-label="Close">✕</button>
+    </div>
+    <div id="matchModalBody"><div class="empty-state" style="box-shadow:none;"><span class="ls-spinner"></span> Loading matches…</div></div>
+  </div>
+</div>
+
+<!-- ================= Driver Profile modal ================= -->
+<div class="modal-overlay" id="driverModal">
+  <div class="modal-box driver-modal-box">
+    <div class="match-modal-head">
+      <div>
+        <h3 id="driverModalTitle">Driver Profile</h3>
+        <p>Trust Score, performance history and recent feedback.</p>
+      </div>
+      <button type="button" class="modal-x" id="driverModalClose" aria-label="Close">✕</button>
+    </div>
+    <div id="driverModalBody"><div class="empty-state" style="box-shadow:none;"><span class="ls-spinner"></span> Loading driver…</div></div>
+  </div>
+</div>
+
+<!-- ================= Admin AI Assistant (matching-aware chatbot) ================= -->
+<!-- Same /api/chat contract/endpoint as the public homepage chatbot — the
+     Authorization header is what unlocks the matching-aware admin
+     resolver server-side (see resolveAdminChatReply in server_load.js). -->
+<button type="button" class="fleet-chat-launcher" id="fleetChatLauncher" aria-expanded="false" aria-label="Open AI dispatcher assistant">🤖</button>
+<div class="fleet-chat-panel" id="fleetChatPanel" data-open="false">
+  <div class="fleet-chat-head">
+    <span>🤖 Dispatch Assistant</span>
+    <button type="button" id="fleetChatClose" aria-label="Close">✕</button>
+  </div>
+  <div class="fleet-chat-messages" id="fleetChatMessages"></div>
+  <form class="fleet-chat-form" id="fleetChatForm">
+    <input type="text" id="fleetChatInput" placeholder="e.g. find the best truck for LS1234567890" autocomplete="off">
+    <button type="submit" id="fleetChatSend">➤</button>
+  </form>
+</div>
+
+<script src="/admin-assets/fleet.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Requests — Shipper — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/portal-assets/requests.css">
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/portal/shipper">
+    <img src="/assets/logo.jpeg" alt="Load Smart">
+    <span class="sub">Shipper Portal</span>
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+    </button>
+    <a class="theme-toggle" id="liveTrackingLink" href="/portal/shipper/live-tracking" style="text-decoration:none;">📍 Live Tracking</a>
+    <a class="back-link" href="/portal/shipper">← Back to My Account</a>
+  </div>
+</header>
+
+<div class="content">
+  <span class="eyebrow">Shipper Portal · Request</span>
+  <h1>My Rate Requests</h1>
+  <p class="sub-line">Track every rate request you've sent, respond to admin counter rates, and see final agreed rates.</p>
+
+  <div class="ls-search-box" style="margin-bottom:18px; max-width:420px;">
+    <span class="ls-search-icon">🔍</span>
+    <input type="text" id="reqSearchInput" class="ls-search-input" placeholder="Search by Token No. or route…">
+  </div>
+  <div id="errorBanner" class="banner error"></div>
+
+  <div id="requestListWrap">
+    <div class="empty-state"><span class="ls-spinner"></span> Loading your rate requests…</div>
+  </div>
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/portal-assets/requests.js"></script>
+</body>
+</html>

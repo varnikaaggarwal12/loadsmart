@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrier Registration — Load Smart</title>
+<link rel="stylesheet" href="/assets/register.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Pvt. Ltd.</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+        </button>
+        <a class="back-link" href="/">← Back to home</a>
+      </div>
+    </header>
+
+    <div class="form-shell">
+      <span class="form-eyebrow">Registration Portal</span>
+      <h1>Register as a Carrier</h1>
+      <p class="intro">Pick up verified loads and get paid on time. Tell us about your fleet, drivers and business to start hauling with Load Smart.</p>
+
+      <div id="serverErrorBanner" style="display:none; margin-bottom:16px; padding:12px 16px; border-radius:10px; background:#fdecea; color:#b3261e; font-family:'Inter',sans-serif; font-size:14.5px;"></div>
+
+      <form method="POST" action="/register/carrier">
+
+        <fieldset>
+          <legend>Company details</legend>
+          <div class="field-row single">
+            <div class="field">
+              <label for="companyName">Carrier / Company name <span class="req">*</span></label>
+              <input type="text" id="companyName" name="companyName" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="contactPerson">Contact person <span class="req">*</span></label>
+              <input type="text" id="contactPerson" name="contactPerson" required>
+            </div>
+            <div class="field">
+              <label for="mobileNumber">Mobile number <span class="req">*</span></label>
+              <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" required>
+              <input type="hidden" id="emailVerifyToken" name="emailVerifyToken">
+              <span class="hint" id="emailHint">We'll email a one-time code to confirm this address when you submit the form.</span>
+              <div class="field-error" id="emailError">Please enter a valid email address.</div>
+            </div>
+            <div class="field">
+              <label for="businessName">Business name <span class="req">*</span></label>
+              <input type="text" id="businessName" name="businessName" required>
+            </div>
+          </div>
+          <div class="field-row single">
+            <div class="field">
+              <label for="mcDotNumber">MC number / DOT number</label>
+              <input type="text" id="mcDotNumber" name="mcDotNumber" placeholder="For US trucking only">
+              <span class="hint">Only applicable for carriers operating in the United States.</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Vehicle / truck details</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="vehicleType">Vehicle type <span class="req">*</span></label>
+              <select id="vehicleType" name="vehicleType" required>
+                <option value="">Select vehicle type</option>
+                <option value="mini-truck">Mini truck</option>
+                <option value="lcv">LCV (Light commercial vehicle)</option>
+                <option value="10-wheeler">10-wheeler</option>
+                <option value="12-wheeler">12-wheeler</option>
+                <option value="trailer">Trailer / container</option>
+                <option value="tanker">Tanker</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="vehicleNumber">Vehicle registration number <span class="req">*</span></label>
+              <input type="text" id="vehicleNumber" name="vehicleNumber" placeholder="DL01AB1234" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="vehicleCapacity">Load capacity (tons)</label>
+              <input type="text" id="vehicleCapacity" name="vehicleCapacity" placeholder="e.g. 9">
+            </div>
+            <div class="field">
+              <label for="fleetSize">Number of vehicles in fleet</label>
+              <input type="number" id="fleetSize" name="fleetSize" min="1" placeholder="1">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Driver details</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="driverName">Driver full name <span class="req">*</span></label>
+              <input type="text" id="driverName" name="driverName" required>
+            </div>
+            <div class="field">
+              <label for="driverLicense">Driving license number <span class="req">*</span></label>
+              <input type="text" id="driverLicense" name="driverLicense" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="driverPhone">Driver phone number <span class="req">*</span></label>
+              <input type="tel" id="driverPhone" name="driverPhone" required>
+            </div>
+            <div class="field">
+              <label for="driverExperience">Driving experience (years)</label>
+              <input type="number" id="driverExperience" name="driverExperience" min="0">
+            </div>
+          </div>
+          <div class="field-row single">
+            <div class="field">
+              <label for="driverAadharNumber">Driver Aadhaar number <span class="req">*</span></label>
+              <input type="text" id="driverAadharNumber" name="driverAadharNumber" placeholder="XXXX XXXX XXXX" maxlength="14" required>
+              <span class="hint" id="driverAadharHint">Required for the driver specifically — the driver is an individual, unlike the company/business account itself. Aadhaar is never required for the carrier/company account.</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Driver Aadhaar — front photo <span class="req">*</span></label>
+              <input type="file" id="driverAadharFrontInput" accept="image/png,image/jpeg,application/pdf">
+              <span class="hint" id="driverAadharFrontHint">Accepted: JPG, PNG, or PDF — max 8MB.</span>
+              <input type="hidden" id="driverAadharFrontPhotoPath" name="driverAadharFrontPhotoPath">
+            </div>
+            <div class="field">
+              <label>Driver Aadhaar — back photo <span class="req">*</span></label>
+              <input type="file" id="driverAadharBackInput" accept="image/png,image/jpeg,application/pdf">
+              <span class="hint" id="driverAadharBackHint">Accepted: JPG, PNG, or PDF — max 8MB.</span>
+              <input type="hidden" id="driverAadharBackPhotoPath" name="driverAadharBackPhotoPath">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Driver RC (vehicle registration certificate) photo</label>
+              <input type="file" id="driverRcInput" accept="image/png,image/jpeg,application/pdf">
+              <span class="hint" id="driverRcHint">Optional now — accepted: JPG, PNG, or PDF, max 8MB. You can also add or replace this later from your Carrier account page.</span>
+              <input type="hidden" id="driverRcPhotoPath" name="driverRcPhotoPath">
+            </div>
+            <div class="field">
+              <label>Driver DL (driving licence) photo</label>
+              <input type="file" id="driverDlInput" accept="image/png,image/jpeg,application/pdf">
+              <span class="hint" id="driverDlHint">Optional now — accepted: JPG, PNG, or PDF, max 8MB. You can also add or replace this later from your Carrier account page.</span>
+              <input type="hidden" id="driverDlPhotoPath" name="driverDlPhotoPath">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Business registration — GST or MSME</legend>
+          <div class="field" style="margin-bottom:16px;">
+            <label>Business registration type <span class="req">*</span></label>
+            <span class="hint">Provide whichever you have — GST or MSME/Udyam. Only one is required, not both.</span>
+            <div class="doc-type-choice" style="display:flex; gap:18px; margin:8px 0 4px;">
+              <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:13.5px; cursor:pointer;">
+                <input type="radio" name="businessDocType" id="docTypeGst" value="gst" checked> GST
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:13.5px; cursor:pointer;">
+                <input type="radio" name="businessDocType" id="docTypeMsme" value="msme"> MSME / Udyam
+              </label>
+            </div>
+          </div>
+
+          <div class="field-row single" id="gstFieldRow">
+            <div class="field">
+              <label for="gstNumber">GST number <span class="req" id="gstReqMark">*</span></label>
+              <input type="text" id="gstNumber" name="gstNumber" placeholder="22AAAAA0000A1Z5" maxlength="15">
+              <span class="hint" id="gstHint">15-character GSTIN, format + checksum checked.</span>
+              <div class="field-error" id="gstNumberError">Please enter a valid 15-character GST number.</div>
+            </div>
+          </div>
+          <div class="field-row single" id="msmeFieldRow" style="display:none;">
+            <div class="field">
+              <label for="msmeNumber">MSME / Udyam registration number <span class="req" id="msmeReqMark">*</span></label>
+              <input type="text" id="msmeNumber" name="msmeNumber" placeholder="UDYAM-XX-00-0000000" maxlength="24">
+              <div class="field-error" id="msmeNumberError">Please enter your MSME / Udyam registration number.</div>
+            </div>
+          </div>
+
+          <div class="field-row single">
+            <div class="field">
+              <label id="businessDocUploadLabel" for="businessDocInput">GST Certificate <span class="req">*</span></label>
+              <input type="file" id="businessDocInput" accept="image/png,image/jpeg,application/pdf">
+              <span class="hint" id="businessDocHint">Accepted: JPG, PNG, or PDF — max 8MB.</span>
+              <input type="hidden" id="gstPhotoPath" name="gstPhotoPath">
+              <input type="hidden" id="msmePhotoPath" name="msmePhotoPath">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Loading slip</legend>
+          <div class="field-row single">
+            <div class="field">
+              <label for="loadingSlipInput">Loading slip <span class="req">*</span></label>
+              <span class="hint">Upload the loading slip for your vehicle/fleet — required to complete registration.</span>
+              <input type="file" id="loadingSlipInput" accept="image/png,image/jpeg,application/pdf" style="margin-top:10px;">
+              <span class="hint" id="loadingSlipHint">Accepted: JPG, PNG, or PDF — max 8MB.</span>
+              <input type="hidden" id="loadingSlipPath" name="loadingSlipPath">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Insurance details</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="insuranceProvider">Insurance provider <span class="req">*</span></label>
+              <input type="text" id="insuranceProvider" name="insuranceProvider" required>
+            </div>
+            <div class="field">
+              <label for="insurancePolicyNumber">Policy number <span class="req">*</span></label>
+              <input type="text" id="insurancePolicyNumber" name="insurancePolicyNumber" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="insuranceExpiry">Policy expiry date</label>
+              <input type="date" id="insuranceExpiry" name="insuranceExpiry">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Bank / payment details</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="bankAccountHolder">Account holder name <span class="req">*</span></label>
+              <input type="text" id="bankAccountHolder" name="bankAccountHolder" required>
+            </div>
+            <div class="field">
+              <label for="bankAccountNumber">Bank account number <span class="req">*</span></label>
+              <input type="text" id="bankAccountNumber" name="bankAccountNumber" inputmode="numeric" maxlength="18" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="bankIfsc">IFSC code <span class="req">*</span></label>
+              <input type="text" id="bankIfsc" name="bankIfsc" placeholder="HDFC0001234" maxlength="11" required>
+              <span class="hint" id="bankIfscHint">4 letters, then 0, then 6 alphanumeric characters.</span>
+            </div>
+            <div class="field">
+              <label for="bankName">Bank name <span class="req">*</span></label>
+              <input type="text" id="bankName" name="bankName" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="bankBranch">Branch name</label>
+              <input type="text" id="bankBranch" name="bankBranch">
+            </div>
+            <div class="field">
+              <label>Account type <span class="req">*</span></label>
+              <div style="display:flex; gap:18px; margin-top:8px;">
+                <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:13.5px; cursor:pointer;">
+                  <input type="radio" name="bankAccountType" value="savings" required> Savings
+                </label>
+                <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:13.5px; cursor:pointer;">
+                  <input type="radio" name="bankAccountType" value="current"> Current
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="field-row single">
+            <div class="field">
+              <label>Bank proof (cancelled cheque or passbook photo) <span class="req">*</span></label>
+              <input type="file" id="bankProofInput" accept="image/png,image/jpeg,application/pdf">
+              <span class="hint" id="bankProofHint">Accepted: JPG, PNG, or PDF — max 8MB.</span>
+              <input type="hidden" id="bankProofPhotoPath" name="bankProofPhotoPath">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Login account details</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="username">Username <span class="req">*</span></label>
+              <input type="text" id="username" name="username" placeholder="e.g. swift_carriers" minlength="3" maxlength="20" required>
+              <span class="hint" id="usernameHint">3–20 characters, letters/numbers/underscore, must start with a letter. This is what you'll use to sign in.</span>
+              <div class="field-error" id="usernameError">Please choose a valid, available username.</div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="password">Password <span class="req">*</span></label>
+              <input type="password" id="password" name="password" required minlength="1" maxlength="10">
+              <span class="hint">1–10 characters, must include an UPPERCASE letter and an @ symbol (e.g. Car@1234).</span>
+            </div>
+            <div class="field">
+              <label for="confirmPassword">Confirm password <span class="req">*</span></label>
+              <input type="password" id="confirmPassword" name="confirmPassword" required minlength="1" maxlength="10">
+            </div>
+          </div>
+        </fieldset>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="termsCheckbox" required>
+          I confirm the details above are accurate and I agree to Load Smart's Terms of Service and Privacy Policy.
+        </label>
+
+        <button type="submit" class="submit-btn" id="createAccountBtn">Create carrier account</button>
+        <p class="form-footer-note">Already registered? <a href="/">Sign in from the home page</a></p>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- ---------- Email OTP verification modal ----------
+     Opens automatically when "Create carrier account" is clicked (after
+     client-side field validation passes). Registration is only completed
+     once the OTP here is verified. -->
+<div class="otp-modal-overlay" id="otpModalOverlay">
+  <div class="otp-modal-box" role="dialog" aria-modal="true" aria-labelledby="otpModalTitle">
+    <button type="button" class="otp-modal-close" id="otpModalCloseBtn" aria-label="Close">✕</button>
+
+    <div id="otpStepVerify">
+      <h3 id="otpModalTitle">Verify Your Email</h3>
+      <p class="otp-modal-sub">Enter the OTP sent to <b id="otpEmailDisplay"></b></p>
+
+      <input type="text" id="otpCodeInput" class="otp-code-input" placeholder="Enter OTP" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+      <div class="field-error" id="otpError" style="text-align:center;"></div>
+
+      <div class="otp-modal-actions">
+        <button type="button" class="kyc-btn" id="otpVerifyBtn" style="flex:1;">Verify OTP</button>
+        <button type="button" class="kyc-btn secondary" id="otpResendBtn" style="flex:1;">Resend OTP</button>
+      </div>
+      <p class="otp-countdown" id="otpCountdown">OTP expires in: 02:00</p>
+      <p class="otp-resend-note" id="otpResendNote"></p>
+    </div>
+
+    <div id="otpStepSuccess" style="display:none; text-align:center;">
+      <div class="otp-success-icon">✓</div>
+      <h3>Email Verified!</h3>
+      <p class="otp-modal-sub">Your email is verified and your account is ready. Continue to finish creating your account.</p>
+      <button type="button" class="submit-btn" id="otpContinueBtn" style="margin-top:10px;">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/tracking.js"></script>
+<script src="/assets/success-popup.js"></script>
+<script src="/register/carrier.js"></script>
+<script src="/assets/password-toggle.js"></script>
+</body>
+</html>

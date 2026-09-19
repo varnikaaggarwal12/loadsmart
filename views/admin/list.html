@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="/assets/auth.js"></script>
+<script src="/assets/success-popup.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ROLE_TITLE}} — Admin — Load Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/search.css">
+<link rel="stylesheet" href="/admin-assets/list.css">
+</head>
+<body>
+<div class="device">
+  <div class="page">
+
+    <header>
+      <a class="logo" href="/admin/dashboard">
+        <img src="/assets/logo.jpeg" alt="Load Smart">
+        <span class="sub">Admin Portal</span>
+      </a>
+      <a class="back-link" href="/admin/dashboard">← Back to dashboard</a>
+    </header>
+
+    <div class="content">
+      <span class="eyebrow">Admin · {{ROLE_TITLE}}</span>
+      <h1>{{ROLE_TITLE}}</h1>
+      <p class="count-line" id="countLine">Loading...</p>
+      <div class="ls-search-box" style="margin-bottom:18px; max-width:380px;">
+        <span class="ls-search-icon">🔍</span>
+        <input type="text" id="recordSearchInput" class="ls-search-input" placeholder="Search by username, company, email or phone…">
+      </div>
+      <div id="tableWrap"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Rejection reason modal — reason is mandatory whenever an admin rejects an account. -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal-box">
+    <h3>Reject this account</h3>
+    <p>Select a reason. This will be shown to the account holder on their portal page.</p>
+    <select id="rejectReasonSelect">
+      <option value="">— Select a reason —</option>
+      <option>Invalid Documents</option>
+      <option>Verification Failed</option>
+      <option>KYC Rejected</option>
+      <option>Document Rejected</option>
+      <option>Details Mismatch</option>
+      <option>Information Mismatch</option>
+      <option>Incomplete Information</option>
+      <option>Missing Documents</option>
+      <option>Expired Document</option>
+      <option>Invalid Aadhaar</option>
+      <option>Invalid PAN</option>
+      <option>Invalid GST</option>
+      <option>Invalid Bank Details</option>
+      <option>Duplicate Account</option>
+      <option>Unauthorized</option>
+      <option>Unable to Verify</option>
+      <option>Verification Failed by API</option>
+      <option>Admin Rejected</option>
+      <option>Application Rejected</option>
+      <option>Other</option>
+    </select>
+    <input type="text" id="rejectOtherText" placeholder="Enter reason" style="display:none;">
+    <p class="modal-error" id="rejectError">Please select a reason (or enter one for "Other").</p>
+    <div class="modal-actions">
+      <button type="button" id="rejectCancelBtn" style="background:#f3f1e9;">Cancel</button>
+      <button type="button" id="rejectConfirmBtn" style="background:#c0392b; color:#fff;">Confirm reject</button>
+    </div>
+  </div>
+</div>
+
+<!-- Broker-only: "Request additional documents" modal (free-text message). -->
+<div class="modal-overlay" id="requestDocsModal">
+  <div class="modal-box">
+    <h3>Request additional documents</h3>
+    <p>Describe what's needed. This is sent to the broker as a notification and (if email is configured) an email.</p>
+    <textarea id="requestDocsText" rows="4" style="width:100%; border:1.5px solid var(--line); border-radius:8px; padding:10px; font-family:inherit; font-size:13.5px;" placeholder="e.g. Please re-upload a clearer photo of your GST certificate."></textarea>
+    <p class="modal-error" id="requestDocsError">Please describe what documents are needed.</p>
+    <div class="modal-actions">
+      <button type="button" id="requestDocsCancelBtn" style="background:#f3f1e9;">Cancel</button>
+      <button type="button" id="requestDocsConfirmBtn" style="background:#0e3a24; color:#fff;">Send request</button>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/search.js"></script>
+<script src="/admin-assets/list.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+  .fleet-tabs{ display:flex; gap:8px; margin-bottom:20px; }
+  .fleet-tab-btn{
+    padding:9px 18px; border-radius:999px; border:1.5px solid var(--line); background:#fff;
+    font-weight:700; font-size:13.5px; cursor:pointer; color:var(--ink); font-family:'Inter',sans-serif;
+  }
+  .fleet-tab-btn.active{ background:var(--green-deep); color:#fff; border-color:var(--green-deep); }
+
+  .fleet-add-btn{
+    display:inline-flex; align-items:center; gap:6px; padding:10px 18px; border-radius:10px;
+    background:var(--green-deep); color:#fff; font-weight:700; font-size:13.5px; border:none; cursor:pointer;
+    margin-bottom:18px;
+  }
+  .fleet-add-btn:hover{ background:var(--green-mid); }
+
+  .fleet-form-card{
+    background:#fff; border-radius:16px; padding:22px 24px; margin-bottom:20px;
+    box-shadow:0 10px 30px -18px rgba(0,0,0,0.22);
+  }
+  .fleet-form-card h3{ font-family:'Baloo 2', sans-serif; margin-bottom:14px; }
+  .fleet-form-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:14px 18px; }
+  .fleet-form-grid .field label{ display:block; font-size:12px; font-weight:700; color:#5c6a61; text-transform:uppercase; letter-spacing:0.3px; margin-bottom:6px; }
+  .fleet-form-grid .field input, .fleet-form-grid .field select{
+    width:100%; padding:10px 12px; border-radius:10px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; font-size:14px; background:#fff; color:inherit;
+  }
+  .fleet-form-actions{ display:flex; gap:10px; margin-top:18px; }
+  .fleet-save-btn{ padding:10px 22px; border-radius:10px; background:var(--green-deep); color:#fff; font-weight:700; border:none; cursor:pointer; font-family:'Inter',sans-serif; }
+  .fleet-save-btn:hover{ background:var(--green-mid); }
+  .fleet-cancel-btn{ padding:10px 22px; border-radius:10px; background:#f3f1e9; color:var(--ink); font-weight:700; border:none; cursor:pointer; font-family:'Inter',sans-serif; }
+  .fleet-form-error{ color:var(--danger, #c0392b); font-size:13px; margin-top:10px; font-weight:600; }
+
+  .fleet-card{
+    background:#fff; border-radius:14px; padding:18px 20px; margin-bottom:12px;
+    box-shadow:0 8px 24px -16px rgba(0,0,0,0.2); display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .fleet-card-main{ font-weight:700; font-size:15px; }
+  .fleet-card-sub{ font-size:12.5px; color:#7a867e; margin-top:3px; }
+  .fleet-card-actions{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .fleet-pill{ font-size:10.5px; font-weight:700; text-transform:uppercase; padding:4px 10px; border-radius:999px; }
+  .fleet-pill.verified{ background:rgba(154,223,143,0.3); color:var(--green-deep); }
+  .fleet-pill.pending{ background:rgba(232,114,44,0.16); color:#8a4210; }
+  .fleet-pill.available{ background:rgba(52,120,246,0.14); color:#1c4f9c; }
+  .fleet-pill.assigned, .fleet-pill.on_trip{ background:rgba(232,114,44,0.16); color:#8a4210; }
+  .fleet-pill.in_transit{ background:rgba(154,223,143,0.3); color:var(--green-deep); }
+  .fleet-pill.maintenance, .fleet-pill.off_duty{ background:rgba(192,57,43,0.14); color:#c0392b; }
+  .fleet-link-btn{ font-size:12.5px; font-weight:700; color:var(--green-deep); background:none; border:none; cursor:pointer; text-decoration:underline; }
+
+  .fleet-modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:100;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .fleet-modal-overlay.show{ display:flex; }
+  .fleet-modal-box{ background:#fff; border-radius:16px; padding:26px; max-width:380px; width:100%; position:relative; }
+  .fleet-modal-close{ position:absolute; top:14px; right:14px; background:none; border:none; font-size:16px; cursor:pointer; color:#7a867e; }
+  .fleet-modal-select{ width:100%; padding:10px 12px; border-radius:10px; border:1.5px solid var(--line); font-size:14px; margin-top:10px; }
+
+  body.dark-mode .fleet-tab-btn{ background:#2c2d30; color:#f2f3f1; border-color:rgba(242,243,241,0.14); }
+  body.dark-mode .fleet-form-card, body.dark-mode .fleet-card, body.dark-mode .fleet-modal-box{ background:#1f2022; color:#f2f3f1; }
+  body.dark-mode .fleet-form-grid .field input, body.dark-mode .fleet-form-grid .field select{ background:#2a2b2e; color:#f2f3f1; border-color:rgba(242,243,241,0.16); }
+  body.dark-mode .fleet-cancel-btn{ background:#2c2d30; color:#f2f3f1; }
+  body.dark-mode .fleet-card-sub{ color:#b7bcb9; }
