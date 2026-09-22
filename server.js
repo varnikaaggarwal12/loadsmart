@@ -1024,7 +1024,9 @@ bookingRequestSchema.index({ shipperUsername: 1 });
 bookingRequestSchema.index({ pickup: 1 });
 bookingRequestSchema.index({ destination: 1 });
 bookingRequestSchema.index({ requiredTruckType: 1 });
-const BookingRequest = mongoose.model('BookingRequest', bookingRequestSchema);
+const BookingRequest =
+  mongoose.models.BookingRequest ||
+  mongoose.model('BookingRequest', bookingRequestSchema);
 
 // ---------- Fleet: Truck & Driver (Automated Matching feature) ----------
 // Both are owned by a Carrier account (carrierUsername) but are separate
