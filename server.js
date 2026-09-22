@@ -717,7 +717,9 @@ registrationSchema.index({ kycStatus: 1 });
 registrationSchema.index({ status: 1 }); // Carrier Connect verification-status filter
 registrationSchema.index({ gstNumber: 1 }, { sparse: true });
 registrationSchema.index({ msmeNumber: 1 }, { sparse: true });
-const Registration = mongoose.model('Registration', registrationSchema);
+const Registration =
+  mongoose.models.Registration ||
+  mongoose.model('Registration', registrationSchema);
 
 // Estimate & Booking (Shipper Portal): covers both "Book Now" and
 // "Send Rate Request" actions — one schema, a `kind` field distinguishes
