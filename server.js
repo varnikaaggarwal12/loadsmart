@@ -85,7 +85,7 @@ const smsService = require('./lib/smsService');
 const gpsConfig = require('./lib/gpsConfig');
 const gpsValidation = require('./lib/gpsValidation');
 
-const app = express();
+const app = express(); // Vercel deployment refresh
 const PORT = process.env.PORT || 4000;
 
 // ---------- Global crash protection ----------
