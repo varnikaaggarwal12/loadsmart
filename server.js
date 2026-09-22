@@ -9466,6 +9466,11 @@ app.use((req, res) => {
 // section above) ----------
 const httpServer = require('http').createServer(app);
 initSocketIO(httpServer);
-httpServer.listen(PORT, () => {
-  console.log(`Load Smart server running at http://localhost:${PORT}`);
-});
+
+if (!process.env.VERCEL) {
+  httpServer.listen(PORT, () => {
+    console.log(`Load Smart server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
