@@ -1060,8 +1060,9 @@ const truckSchema = new mongoose.Schema({
 });
 truckSchema.index({ truckType: 1 });
 truckSchema.index({ status: 1 });
-const Truck = mongoose.model('Truck', truckSchema);
-
+const Truck =
+  mongoose.models.Truck ||
+  mongoose.model('Truck', truckSchema);
 const driverSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   carrierUsername: { type: String, required: true, index: true },
