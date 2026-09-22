@@ -4,7 +4,7 @@
   "description": "Load Smart Pvt. Ltd. website + registration portal server",
   "main": "server_load.js",
   "scripts": {
-    "start": "node server_load.js",
+    "start": "node server.js",
     "test": "node --test"
   },
   "dependencies": {
